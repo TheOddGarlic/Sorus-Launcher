@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorus Launcher</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="node_modules/typeface-raleway/index.css">
+
+</head>
+<body>
+    <header class="navbar">
+        <ul class="nav-ul">
+            <li>
+                <a onclick="exitApp();"><object type="image/svg+xml" data="svg/exit.svg"></object></a>
+            </li>
+            <li>
+                <a onclick="miniApp();"><object type="image/svg+xml" data="svg/minimize.svg"></object></a>
+            </li>
+            <li>
+                <a onclick="settingsApp()"><object type="image/svg+xml" data="svg/settings.svg"></object></a>
+            </li>
+            <li>
+                <a onclick="userApp();"><object type="image/svg+xml" data="svg/user.svg"></object></a>
+            </li>
+            <li>
+                <a onclick="homeApp();"><object type="image/svg+xml" data="svg/home.svg"></object></a>
+            </li>
+            <div class="navbar-left">
+                <img src="media/sorus_dark.png" alt="">
+                <div>Sorus Launcher - Home</div>
+            </div>
+
+            <script>
+                const {ipcRenderer} = require('electron');
+                function exitApp() {
+                    ipcRenderer.send('close-app');
+                }
+                function miniApp() {
+                    ipcRenderer.send('minimize-app')
+                }
+            </script>
+        </ul>
+    </header>
+
+    <div class="sidebar">
+        <!-- news -->
+        <ul id="news-bar" class="side-news">
+            <li>
+                <div class="entry-title">Launcher Released</div>
+                <div class="entry-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem veritatis optio impedit aliquid alias.</div>
+                <div class="entry-footer">
+                    <img class="ef-pfp" src="https://crafatar.com/avatars/f247be7c5b8241c69148793ded77e71f" alt=""></img>
+                    <div class="ef-name">Posted By <b>Name</b></div>
+                    <div class="ef-date">01/12/2020 at 12:00pm</div>
+                </div>
+            </li>
+        </ul>
+        <!-- settings -->
+        <ul id="settings-bar" class="side-settings">
+            <li>
+               <div class="entry-title">Client Settings</div>
+               <div class="entry-content">
+                    <ul class="client-settings">
+                        <li>
+                            <label id="minramusageslider" for="minramusageslider">Min Ram Usage: </label> 
+                            <input type="range" name="minramusageslider" min="512" max="2048" step="32" id="min_ram_slider">
+                        </li>
+                        <li>
+                           <label id="maxramusageslider" for="maxramusageslider">Max Ram Usage: </label> 
+                           <input type="range" name="maxramusageslider" min="512" max="2048" step="32" id="max_ram_slider">
+
+                           <!-- <div class="inputwrap">
+                            <input type="range" class="range" min="0" max="100" step="0.1" value="0" id="max_ram_slider" name="maxramusageslider">
+                            <div class="track">
+                              <div class="track-inner"></div>
+                            </div>
+                            <div class="thumb"></div>
+                          </div> -->
+                        </li>
+                        
+                        <li>
+                            <label id="fullscreenoutput">
+                                Fullscreen
+                                <input type="checkbox" id="fullscreen_chkbox">
+                                <!-- <span class="checkmark"></span> -->
+                                
+                            </label>
+                        </li>
+                    </ul>
+               </div>
+            </li>
+            <li>
+                <div class="entry-title">Launcher Settings</div>
+                <div class="entry-content">
+                    <ul class="launcher-settings">
+                        <li>
+                            <form action="">
+                                <label for="launcher_visibility">Launcher visibility on launch: </label>
+                                <select name="launcher_visibility" id="launcher_visibility">
+                                    <option value="Keep">Keep</option>
+                                    <option value="Hide">Hide</option>
+                                    <option value="Close">Close</option>
+                                </select>
+                              </form>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li>
+                <input type="button" value="Save" onclick="saveOptions()">
+            </li>
+        </ul>
+
+    </div>
+
+    <div class="play-btn-container">
+        <a class="playbtn" onclick="launchMinecraft();">
+            <object style="position: absolute; left: 15px;" type="image/svg+xml" data="svg/play.svg" width="53px"></object>
+            <div class="playbtn-text">PLAY</div>
+        </a>
+        <a class="playbtn-ver-sel" onclick="versel();">
+            <object type="image/svg+xml" data="svg/arrow.svg" style="color: #262626"></object>
+        </a>
+
+        <script>
+            function versel() {
+                const ver_disabler = document.getElementById("ver_disabler");
+                const ver_selector = document.getElementById("ver_selector");
+                
+                if(ver_selector.style.display == "none") {
+                    ver_selector.style.display = "flex";
+                    ver_disabler.style.display = "block";
+                } else {
+                    ver_selector.style.display = "none";
+                    ver_disabler.style.display = "none";
+                    saveOptions();
+                }
+
+            }
+        </script>
+
+    </div>
+
+    <div id="ver_disabler" onclick="versel();"></div>
+    <div id="ver_selector" style="display: none;">
+        <div class="ver_selector">
+            <div class="ver_title">Choose a version</div>
+            <form id="ver_form" action="" name="ver_form" method="post">
+                <ul>
+                    <li>
+                        <input type="radio" name="version" id="ver_1" value="0">
+                        <label for="ver_1">
+                            <img id="ver_1" src="media/bg1.png" alt="">
+                            <div class="ver_name">1.7</div>
+                        </label>
+                    </li>
+                    <li>
+                        <input type="radio" name="version" id="ver_2" value="1">
+                        <label for="ver_2">
+                            <img id="ver_2" src="media/bg1.png" alt="">
+                            <div class="ver_name">1.8</div>
+                        </label>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+
+    
+
+
+    <script>
+        window.onload = function winOnLoad() {
+            const ver_disabler = document.getElementById("ver_disabler");
+            const ver_selector = document.getElementById("ver_selector");
+
+            ver_disabler.style.display = "none";
+            ver_selector.style.display = "none";
+
+            // document.querySelector(".ver_selector a img").style.filter = "grayscale(100%)";
+
+            var opts = document.getElementById("settings-bar");
+            var news = document.getElementById("news-bar");
+
+            opts.style.right = "-500px";
+            news.style.right = "0px";
+        }
+        
+        function settingsApp() {
+            var options = document.getElementById("settings-bar");
+            var news = document.getElementById("news-bar");
+
+            news.style.right = "-500px";
+            options.style.right = "0px";
+        }
+
+        function homeApp() {
+            var options = document.getElementById("settings-bar");
+            var news = document.getElementById("news-bar");
+
+            news.style.right = "0px";
+            options.style.right = "-500px";
+        }
+
+    </script>
+
+    <script src="./js/accounts.js"></script>
+    <script src="./js/optionsmanager.js"></script>
+    <script src="./js/downloadUtils.js"></script>
+    <script src="./js/launch.js"></script>
+    <!-- <script src="./js/css_components.js"></script> -->
+    
+</body>
+</html>

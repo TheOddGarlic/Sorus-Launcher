@@ -1,0 +1,34 @@
+:root {
+    --back-bg: #262626;
+    --fore-bg: #3F3F3F;
+    --nav-bg: #1D1D1D;
+    
+    --nav-height: 80px;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    background-color: var(--back-bg);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+@font-face {
+    font-family: 'Raleway';
+    src: url('../font/Raleway-VariableFont_wght.ttf') format('truetype');
+}
+
+* {
+    font-family: 'Raleway';
+    font-feature-settings: 'lnum' 1;
+}
+
+input[type="range"],
+input[type="checkbox"],
+input[type="radio"] {
+    cursor: pointer;
+}
