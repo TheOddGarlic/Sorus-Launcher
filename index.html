@@ -117,7 +117,10 @@
     <div class="play-btn-container">
         <a class="playbtn" onclick="launchMinecraft();">
             <object style="position: absolute; left: 15px;" type="image/svg+xml" data="svg/play.svg" width="53px"></object>
-            <div class="playbtn-text">PLAY</div>
+            <div class="playbtn-text-cont">
+                <div class="playbtn-text" id="playbtn-text">PLAY</div>
+                <div class="playbtn-status" id="playbtn-status">Launch 1.8.9</div>
+            </div>
         </a>
         <a class="playbtn-ver-sel" onclick="versel();">
             <object type="image/svg+xml" data="svg/arrow.svg" style="color: #262626"></object>
@@ -149,14 +152,14 @@
             <form id="ver_form" action="" name="ver_form" method="post">
                 <ul>
                     <li>
-                        <input type="radio" name="version" id="ver_1" value="0">
+                        <input type="radio" name="version" id="ver_1" value="1.7.10">
                         <label for="ver_1">
                             <img id="ver_1" src="media/bg1.png" alt="">
                             <div class="ver_name">1.7</div>
                         </label>
                     </li>
                     <li>
-                        <input type="radio" name="version" id="ver_2" value="1">
+                        <input type="radio" name="version" id="ver_2" value="1.8.9">
                         <label for="ver_2">
                             <img id="ver_2" src="media/bg1.png" alt="">
                             <div class="ver_name">1.8</div>
@@ -166,9 +169,6 @@
             </form>
         </div>
     </div>
-
-    
-
 
     <script>
         window.onload = function winOnLoad() {
@@ -209,7 +209,6 @@
     <script src="./js/optionsmanager.js"></script>
     <script src="./js/downloadUtils.js"></script>
     <script src="./js/launch.js"></script>
-    <!-- <script src="./js/css_components.js"></script> -->
     
 </body>
 </html>

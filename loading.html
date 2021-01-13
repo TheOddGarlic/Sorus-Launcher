@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorus Launcher - Loading</title>
+    <link rel="stylesheet" href="node_modules/typeface-raleway/index.css">
+
+    <style>
+        body {
+            background-color: #1D1D1D;
+            padding-top: 50px;
+        }
+        .login {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Raleway';
+        }
+        .title {
+            font-weight: 600;
+            font-size: 48px;
+            color: white;
+        }
+        .inputfieldscontainer {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 80%;
+            align-self: center;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            padding-bottom: 10px;
+        }
+
+        .inputfieldscontainer input {
+            width: 100%;
+            padding: 15px;
+            color: white;
+            background-color: #272727;
+            border-radius: 10px;
+            outline: none;
+            border: none;
+            font-family: 'Raleway';
+            font-weight: 600;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 15px;
+        }
+
+        .status {
+
+        }
+    </style>
+
+</head>
+<body>
+    <div class="login">
+        <div class="title">LOGIN</div>
+        <div class="inputfieldscontainer">
+            <input type="text" name="emailfield" id="emailfield" placeholder="EMAIL">
+            <input type="password" name="passwordfield" id="passwordfield" placeholder="PASSWORD">
+        </div>
+        <div class="status" id="status"></div>
+        <button onclick="sendAuthRequest()" class="submit" id="submit">LOGIN</button>
+
+    </div>
+
+    <script>
+        var status = document.getElementById('status');
+        var submit = document.getElementById('submit');
+        var emailfield = document.getElementById('emailfield');
+        var passwordfield = document.getElementById('passwordfield');
+
+        function sendAuthRequest() {
+            var email = emailfield.value;
+            var password = passwordfield.value;
+
+            var xhr = new XMLHttpRequest();
+            var url = "http://authserver.mojang.com/authenticate";
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var json = JSON.parse(xhr.responseText);
+
+                    var accessToken = json.accessToken;
+                    var clientToken = json.clientToken;
+
+                    var username = json.selectedProfile.name;
+                    var uuid = json.selectedProfile.id;
+                    var selectedProfile = json.selectedProfile;
+
+                    var userProperties = JSON.stringify(json.user.properties || {})
+
+                    console.log(json);
+                    
+                    const fs = require('fs');
+                    let details = {
+                        username: username,
+                        uuid: uuid,
+                        selectedProfile: selectedProfile,
+                        userProperties: userProperties,
+                        accessToken: accessToken,
+                        clientToken: clientToken
+                    }
+                    let jsonData = JSON.stringify(details, null, 4);
+                    fs.writeFileSync("./details.json", jsonData, function(err) {
+                        if(err) {
+                            console.log(err);
+                        }
+                    });
+                    status.innerHTML = "SUCCESS"
+                    setTimeout(function() {
+                        const {ipcRenderer} = require('electron');
+                        ipcRenderer.send('resize-me-please');
+                        ipcRenderer.send('auth-success')
+                    }, 2000)
+                } else {
+                    status.innerHTML = "INVALID CREDENTIALS*"
+                    // status.style.color = "#FF3939"
+                }
+            };
+            console.log(email + " : " + password)
+            var data = JSON.stringify({
+                "agent": {                              // defaults to Minecraft
+                    "name": "Minecraft",                // For Mojang's other game Scrolls, "Scrolls" should be used
+                    "version": 1                        // This number might be increased
+                                                        // by the vanilla client in the future
+                },
+                "username": email,      // Can be an email address or player name for
+                                                        // unmigrated accounts
+                "password": password,
+                "requestUser": true                     // optional; default: false; true adds the user object to the response
+            });
+            xhr.send(data);
+        }
+
+        function refreshAccessToken() {
+            var xhr = new XMLHttpRequest();
+            var url = "http://authserver.mojang.com/refresh";
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var json = JSON.parse(xhr.responseText);
+
+                    var accessToken = json.accessToken;
+                    var clientToken = json.clientToken;
+
+                    status.innerHTML = "SUCCESSFULLY REFRESHED ACCESSTOKEN"
+                    status.style.color = "#2F8A03"
+                } else {
+                    status.innerHTML = "COULD NOT REFRESH"
+                    status.style.color = "#FF3939"
+                }
+            };
+            var data = JSON.stringify({
+                "accessToken": accessToken,
+                "clientToken": clientToken,
+
+                "requestUser": true
+            });
+            xhr.send(data);
+        }
+
+        function validate() {
+            var xhr = new XMLHttpRequest();
+            var url = "http://authserver.mojang.com/refresh";
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 204) {
+                    var json = JSON.parse(xhr.responseText);
+
+                    var accessToken = json.accessToken;
+
+                    status.innerHTML = "SUCCESSFUL VALIDATION"
+                    status.style.color = "#2F8A03"
+                } else {
+                    status.innerHTML = "COULD NOT VALIDATE"
+                    status.style.color = "#FF3939"
+                }
+            };
+            var data = JSON.stringify({
+                "accessToken": accessToken
+            });
+            xhr.send(data);
+            
+        }
+
+
+    </script>
+</body>
+</html>

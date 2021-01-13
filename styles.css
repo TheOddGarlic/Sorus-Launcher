@@ -60,9 +60,24 @@ a:hover {
     transition: 0.3s;
 }
 
+.playbtn-text-cont {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-left: 50px;
+}
+
 .playbtn-text {
     font-weight: 700;
     letter-spacing: 5px;
+    font-size: 40px;
+}
+
+.playbtn-status {
+    font-size: 15px;
+    text-transform: none;
+    font-weight: 700;
 }
 
 .playbtn:hover,

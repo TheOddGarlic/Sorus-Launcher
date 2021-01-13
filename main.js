@@ -1,11 +1,10 @@
 const { app, BrowserWindow } = require('electron')
 const path = require('path');
 
-function createLoadingWindow () {
-  // Create the browser window.
+function createMainWindow() {
   const win = new BrowserWindow({
-    width: 1200,
-    height: 800,
+    width: 350,
+    height: 500,
     frame: false,
     webPreferences: {
       nodeIntegration: true,
@@ -13,11 +12,12 @@ function createLoadingWindow () {
   })
 
   win.webContents.openDevTools()
-  win.loadFile('index.html')
+  win.loadFile('loading.html')
   win.resizable = false
   win.setFullScreenable = false
 
   const {ipcMain} = require('electron');
+
   ipcMain.on('resize-me-please', (event, arg) => {
     win.setSize(1200,800)
     win.center();
@@ -35,10 +35,24 @@ function createLoadingWindow () {
     win.hide();
   })
 
+  ipcMain.on('show-app', (event, arg) => {
+    win.show();
+  })
+
+  ipcMain.on('auth-success', (event, args) => {
+    win.webContents.openDevTools()
+    win.loadFile('index.html')
+    win.resizable = false
+    win.setFullScreenable = false
+    
+  })
+
 }
 
 
-app.whenReady().then(createLoadingWindow)
+
+
+app.whenReady().then(createMainWindow)
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

@@ -7,6 +7,8 @@ var maxoutput = document.getElementById("maxramusageslider");
 var autoupdateclient = document.getElementById("autoupdateclient");
 var autoupdatelauncher = document.getElementById("autoupdatelauncher");
 var launcher_visibility = document.getElementById("launcher_visibility");
+var playbtn_text = document.getElementById("playbtn-text");
+var playbtn_status = document.getElementById("playbtn-status");
 
 function getRadioVal(form, name) {
 	var val;
@@ -108,6 +110,8 @@ window.onload = function() {
 			fullscreen = data.client_settings.fullscreen;
 			fullscreen_chkbox.checked = fullscreen;
 
+			playbtn_status.innerText = "Launch " + data.mc_ver;
+
 			/**
 			 * 
 			 * LAUNCHER SETTINGS
@@ -130,6 +134,29 @@ window.onload = function() {
 			setSelectedVersion("1");
 
 			launcher_visibility.value = "Hide";
+
+			let settings = {
+				mc_ver: "1.8.9",
+				client_settings: {
+					min_ram: 1024,
+					max_ram: 2048,
+					fullscreen: false,
+				},
+				launcher_settings: {
+					// autoupdate_client: autoupdateclient.value,
+					// autoupdate_launcher: autoupdatelauncher.value,
+					launcher_visibility_on_launch: "Close"
+				}
+			}
+		
+			let fs = require('fs');
+			let jsonData = JSON.stringify(settings, null, 4);
+			fs.writeFileSync("./settings.json", jsonData, function(err) {
+				if(err) {
+					console.log(err);
+				}
+			});
+			
 		}
 	} catch (err) {
 		console.error(err);
