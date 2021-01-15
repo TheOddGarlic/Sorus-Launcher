@@ -25,17 +25,20 @@ function launchMinecraft() {
        user_properties: details.user_properties 
     }
 
+    console.log(options);
+    console.log(details)
+
     let opts = {
         clientPackage: null,
         authorization: Authenticator.getAuth("Chief"),
         root: "./mc/",
         version: {
-            number: options.mc_ver,
+            number: "1.8.9",
             type: "release",
         },
         memory: {
-            max: max_ram_usage,
-            min: min_ram_usage
+            max: "5G",
+            min: "3G"
         },
         window: {
             fullscreen: options.client_settings.fullscreen,

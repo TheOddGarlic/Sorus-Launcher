@@ -2,6 +2,7 @@
 @import url('./css/navbar.css');
 @import url('./css/sidebar.css');
 @import url('./css/version.css');
+@import url('./css/animate.css');
 
 * {
     -webkit-user-select: none;

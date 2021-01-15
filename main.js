@@ -11,7 +11,7 @@ function createMainWindow() {
     }
   })
 
-  win.webContents.openDevTools()
+  // win.webContents.openDevTools()
   win.loadFile('loading.html')
   win.resizable = false
   win.setFullScreenable = false

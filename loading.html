@@ -10,6 +10,7 @@
         body {
             background-color: #1D1D1D;
             padding-top: 50px;
+            overflow: hidden;
         }
         .login {
             display: flex;
@@ -30,11 +31,8 @@
             align-items: center;
             width: 80%;
             align-self: center;
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
             padding-bottom: 10px;
+            margin-top: 50px;
         }
 
         .inputfieldscontainer input {
@@ -50,97 +48,226 @@
             text-align: center;
             margin-top: 15px;
             font-size: 15px;
+            transition: 0.3s;
+            font-weight: 400;
         }
 
         .status {
-
+            margin-top: 25px;
+            text-align: center;
         }
+
+        .submit {
+            position: absolute;
+            bottom: 50px;
+            border: none;
+            outline: none;
+            border-radius: 10px;
+            padding: 15px;
+            width: 40%;
+            background: #272727;
+            color: white;
+            transition: 0.3s;
+        }
+
+        .submit:hover {
+            background: #3a3a3a;
+            cursor: pointer;
+        }
+
+        .top-container {
+            display: flex;
+            flex-direction: row-reverse;
+        }
+
+        .overlay {
+            z-index: 9999;
+            background-color: #1d1d1d;
+            height: 100%;
+            width: 100%;
+            display: block;
+            pointer-events: none;
+            opacity: 0%;
+            transition: 1.5s all;
+            position: absolute;
+        }
+
+        @keyframes logoAnimation {
+            from {
+                left: 0%;
+                top: 0%;
+                visibility: visible;
+            }
+            
+            to {
+                left: 37%;
+                margin-top: 50%;
+                transform: scale(2);
+            }
+        }
+
+        .logoAnimation {
+            animation: logoAnimation 2s;
+            animation-fill-mode: forwards;
+        }
+
+        #logo {
+            position: relative;
+            z-index: 99999;
+        }
+
+        .loadingtext {
+            opacity: 0%;
+            pointer-events: none;
+
+            font-family: 'Raleway';
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            transition: 2s all;
+
+            position: fixed;
+            left: 50%;
+            z-index: 99999;
+            transform: translate(-50%, -175%);
+            text-align: center;
+        }
+
+        .loadingtext h1 {
+            font-weight: 500;
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        .loadingtext h4 {
+            font-weight: 500;
+            text-transform: uppercase;
+            color: #929292;
+            padding: 0;
+            margin: 15px;
+        }
+
     </style>
 
 </head>
 <body>
-    <div class="login">
-        <div class="title">LOGIN</div>
-        <div class="inputfieldscontainer">
+    <div class="overlay" id="overlay"></div>
+    <div class="login" id="login">
+        <div class="top-container">
+            <div class="title">LOGIN</div>
+            <object id="logo" data="./svg/sorus.svg" type="image/svg+xml"></object>
+        </div>
+        <form class="inputfieldscontainer" action="">
             <input type="text" name="emailfield" id="emailfield" placeholder="EMAIL">
             <input type="password" name="passwordfield" id="passwordfield" placeholder="PASSWORD">
-        </div>
+        </form>
         <div class="status" id="status"></div>
-        <button onclick="sendAuthRequest()" class="submit" id="submit">LOGIN</button>
+        <button onclick="sendAuthRequest()" type="button" class="submit" id="submit">LOGIN</button>
+    </div>
 
+    <div class="loadingtext" id="loadingtext">
+        <h1>LOADING SORUS</h1>
+        <h4>PLEASE WAIT</h4>
     </div>
 
     <script>
-        var status = document.getElementById('status');
+        let status = document.getElementById('status');
         var submit = document.getElementById('submit');
         var emailfield = document.getElementById('emailfield');
         var passwordfield = document.getElementById('passwordfield');
+
+        window.onload = function() {
+            var fs = require('fs');
+            try {
+                status.innerHTML = "CHECKING FOR ACCESSTOKEN"
+                status.style.color = "#fff";
+                if(fs.existsSync('./details.json')) {
+                    status.style.color = "#2F8A03";
+                    status.innerHTML = "ACCESSTOKEN FOUND - VALIDATING"
+                    validate();
+                } else {
+                    console.log("?")
+                    status.innerHTML = "ACCESSTOKEN NOT FOUND - PLEASE LOGIN"
+                    status.style.color = "#FF3939"
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
 
         function sendAuthRequest() {
             var email = emailfield.value;
             var password = passwordfield.value;
 
-            var xhr = new XMLHttpRequest();
-            var url = "http://authserver.mojang.com/authenticate";
-            xhr.open("POST", url, true);
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    var json = JSON.parse(xhr.responseText);
+            if(password < 3) {
+                status.innerHTML = "NOT ENOUGH CHARACTERS";
+                status.style.color = "#FF3939"
 
-                    var accessToken = json.accessToken;
-                    var clientToken = json.clientToken;
+                console.log("Not enought chars")
+            }  else {
+                var xhr = new XMLHttpRequest();
+                var url = "http://authserver.mojang.com/authenticate";
+                xhr.open("POST", url, true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        var json = JSON.parse(xhr.responseText);
 
-                    var username = json.selectedProfile.name;
-                    var uuid = json.selectedProfile.id;
-                    var selectedProfile = json.selectedProfile;
+                        var accessToken = json.accessToken;
+                        var clientToken = json.clientToken;
 
-                    var userProperties = JSON.stringify(json.user.properties || {})
+                        var username = json.selectedProfile.name;
+                        var uuid = json.selectedProfile.id;
+                        var selectedProfile = json.selectedProfile;
 
-                    console.log(json);
-                    
-                    const fs = require('fs');
-                    let details = {
-                        username: username,
-                        uuid: uuid,
-                        selectedProfile: selectedProfile,
-                        userProperties: userProperties,
-                        accessToken: accessToken,
-                        clientToken: clientToken
-                    }
-                    let jsonData = JSON.stringify(details, null, 4);
-                    fs.writeFileSync("./details.json", jsonData, function(err) {
-                        if(err) {
-                            console.log(err);
+                        var userProperties = JSON.stringify(json.user.properties || {})
+
+                        console.log(json);
+                        
+                        const fs = require('fs');
+                        let details = {
+                            username: username,
+                            uuid: uuid,
+                            selectedProfile: selectedProfile,
+                            userProperties: userProperties,
+                            accessToken: accessToken,
+                            clientToken: clientToken
                         }
-                    });
-                    status.innerHTML = "SUCCESS"
-                    setTimeout(function() {
-                        const {ipcRenderer} = require('electron');
-                        ipcRenderer.send('resize-me-please');
-                        ipcRenderer.send('auth-success')
-                    }, 2000)
-                } else {
-                    status.innerHTML = "INVALID CREDENTIALS*"
-                    // status.style.color = "#FF3939"
-                }
-            };
-            console.log(email + " : " + password)
-            var data = JSON.stringify({
-                "agent": {                              // defaults to Minecraft
-                    "name": "Minecraft",                // For Mojang's other game Scrolls, "Scrolls" should be used
-                    "version": 1                        // This number might be increased
-                                                        // by the vanilla client in the future
-                },
-                "username": email,      // Can be an email address or player name for
-                                                        // unmigrated accounts
-                "password": password,
-                "requestUser": true                     // optional; default: false; true adds the user object to the response
-            });
-            xhr.send(data);
+                        let jsonData = JSON.stringify(details, null, 4);
+                        fs.writeFileSync("./details.json", jsonData, function(err) {
+                            if(err) {
+                                console.log(err);
+                            }
+                        });
+                        status.innerHTML = "SUCCESS"
+                        status.style.color = "#2F8A03";
+                        successfulAuth();
+                    } else {
+                        status.innerHTML = "INVALID CREDENTIALS*"
+                    }
+                };
+                console.log(email + " : " + password)
+                var data = JSON.stringify({
+                    "agent": {                              // defaults to Minecraft
+                        "name": "Minecraft",                // For Mojang's other game Scrolls, "Scrolls" should be used
+                        "version": 1                        // This number might be increased
+                                                            // by the vanilla client in the future
+                    },
+                    "username": email,      // Can be an email address or player name for
+                                                            // unmigrated accounts
+                    "password": password,
+                    "requestUser": true                     // optional; default: false; true adds the user object to the response
+                });
+                xhr.send(data);
+            }
         }
 
         function refreshAccessToken() {
+            var fs = require('fs');
+            var details = JSON.parse(fs.readFileSync("./details.json"))
+
             var xhr = new XMLHttpRequest();
             var url = "http://authserver.mojang.com/refresh";
             xhr.open("POST", url, true);
@@ -152,16 +279,41 @@
                     var accessToken = json.accessToken;
                     var clientToken = json.clientToken;
 
+                    let details = {
+                        accessToken: accessToken,
+                        clientToken: clientToken
+                    }
+
+                    let oldDetails = JSON.parse(fs.readFileSync("./details.json"))
+
+                    let newDetails = {
+                        accessToken: details.accessToken,
+                        clientToken: details.clientToken,
+
+                        userProperties: oldDetails.userProperties,
+                        selectedProfile: oldDetails.selectedProfile,
+                        username: oldDetails.username,
+                        uuid: oldDetails.uuid
+                    }
+
+                    let jsonData = JSON.stringify(newDetails, null, 4);
+                        fs.writeFileSync("./details.json", jsonData, function(err) {
+                            if(err) {
+                                console.log(err);
+                            }
+                        });
+
                     status.innerHTML = "SUCCESSFULLY REFRESHED ACCESSTOKEN"
                     status.style.color = "#2F8A03"
+                    successfulAuth();
                 } else {
                     status.innerHTML = "COULD NOT REFRESH"
                     status.style.color = "#FF3939"
                 }
             };
             var data = JSON.stringify({
-                "accessToken": accessToken,
-                "clientToken": clientToken,
+                "accessToken": details.accessToken,
+                "clientToken": details.clientToken,
 
                 "requestUser": true
             });
@@ -169,28 +321,46 @@
         }
 
         function validate() {
+            var fs = require('fs');
+            var details = JSON.parse(fs.readFileSync("./details.json"))
+
             var xhr = new XMLHttpRequest();
-            var url = "http://authserver.mojang.com/refresh";
+            var url = "http://authserver.mojang.com/validate";
             xhr.open("POST", url, true);
             xhr.setRequestHeader("Content-Type", "application/json");
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && xhr.status === 204) {
-                    var json = JSON.parse(xhr.responseText);
-
-                    var accessToken = json.accessToken;
-
                     status.innerHTML = "SUCCESSFUL VALIDATION"
                     status.style.color = "#2F8A03"
                 } else {
-                    status.innerHTML = "COULD NOT VALIDATE"
+                    status.innerHTML = "INVALID - REFRESHING TOKEN"
                     status.style.color = "#FF3939"
+                    refreshAccessToken();
                 }
             };
             var data = JSON.stringify({
-                "accessToken": accessToken
+                "accessToken": details.accessToken
             });
             xhr.send(data);
-            
+        }
+
+        function successfulAuth() {
+
+            var loadingtext = document.getElementById('loadingtext');
+            var overlay = document.getElementById('overlay');
+            var logo = document.getElementById('logo');
+
+            loadingtext.style.opacity = "100%";
+            loadingtext.style.pointerEvents = "all";
+            overlay.style.opacity = "100%";
+            overlay.style.pointerEvents = "all";
+            logo.classList.add('logoAnimation');
+
+            setTimeout(function() {
+                            const {ipcRenderer} = require('electron');
+                            ipcRenderer.send('resize-me-please');
+                            ipcRenderer.send('auth-success')
+            }, 5000)
         }
 
 
