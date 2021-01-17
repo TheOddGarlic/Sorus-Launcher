@@ -1,15 +1,43 @@
 {
-  "name": "soruslauncherredesigned",
-  "version": "1.0.0",
-  "description": "",
+  "name": "soruslauncher",
+  "version": "0.1.0",
+  "description": "Launcher for Sorus",
   "main": "main.js",
   "scripts": {
-    "start": "C:\\Users\\PC\\node_modules\\electron\\dist\\electron.exe ."
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
   "author": "Hot Tutorials",
   "license": "MIT",
   "dependencies": {
+    "electron-updater": "^4.3.5",
     "minecraft-launcher-core": "^3.16.1",
     "typeface-raleway": "^1.1.13"
+  },
+  "devDependencies": {
+    "electron-builder": "^22.9.1",
+    "electron": "^11.2.0"
+  },
+  "build": {
+    "appId": "ml.sorus.launcher",
+    "mac": {
+      "category": "your.app.category.type"
+    },
+    "productName": "Sorus Launcher",
+    "target": "NSIS",
+    "directories": {
+      "output": "build"
+    },
+    "nsis": {
+      "allowToChangeInstallationDirectory": true,
+      "oneClick": false
+    },
+    "files": [
+      "!settings.json",
+      "!details.json",
+      "!.gitignore",
+      "!mc/"
+    ]
   }
 }

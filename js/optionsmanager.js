@@ -9,6 +9,8 @@ var autoupdatelauncher = document.getElementById("autoupdatelauncher");
 var launcher_visibility = document.getElementById("launcher_visibility");
 var playbtn_text = document.getElementById("playbtn-text");
 var playbtn_status = document.getElementById("playbtn-status");
+const {remote} = require('electron');
+const {app} = remote;
 
 function getRadioVal(form, name) {
 	var val;
@@ -58,7 +60,7 @@ function saveOptions() {
 
 	let fs = require('fs');
 	let jsonData = JSON.stringify(settings, null, 4);
-	fs.writeFileSync("./settings.json", jsonData, function(err) {
+	fs.writeFileSync(app.getPath("userData") + "settings.json", jsonData, function(err) {
 		if(err) {
 			console.log(err);
 		}
@@ -80,8 +82,8 @@ window.onload = function() {
 	const fs = require('fs');
 
 	try {
-		if(fs.existsSync('./settings.json')) {
-			let data = JSON.parse(fs.readFileSync('./settings.json'));
+		if(fs.existsSync(app.getPath("userData") + 'settings.json')) {
+			let data = JSON.parse(fs.readFileSync(app.getPath("userData") + 'settings.json'));
 
 			/**
 			 * 
@@ -151,7 +153,7 @@ window.onload = function() {
 		
 			let fs = require('fs');
 			let jsonData = JSON.stringify(settings, null, 4);
-			fs.writeFileSync("./settings.json", jsonData, function(err) {
+			fs.writeFileSync(app.getPath("userData") + "settings.json", jsonData, function(err) {
 				if(err) {
 					console.log(err);
 				}

@@ -2,3 +2,7 @@ node_modules/*
 settings.json
 details.json
 mc/*
+mc/
+build/*
+build/
+node_modules/

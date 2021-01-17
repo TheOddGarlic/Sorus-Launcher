@@ -1,9 +1,10 @@
 var http = require('http');
 var https = require('https');
 var fs = require('fs');
+const { app } = require('electron');
 
 function downloadSorus(version, cb) {
-    var dest = "./mc/Sorus/"
+    var dest = app.getPath("userData") + "mc/Sorus/"
     var url = 'https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/versions/' + version +'.jar'
     var file = fs.createWriteStream(dest);
     var request = https.get(url, function(response) {

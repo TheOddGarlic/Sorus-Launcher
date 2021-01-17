@@ -6,16 +6,18 @@ function changePlayButtonStatus(string) {
     playbtn_status.innerText = string;
 }
 
+var fs = require("fs");
+
 function launchMinecraft() {
     const { Client, Authenticator } = require('minecraft-launcher-core');
     const launcher = new Client();
 
-    var options = JSON.parse(fs.readFileSync("./settings.json"));
+    var options = JSON.parse(fs.readFileSync(app.getPath("userData") + "settings.json"));
 
     var max_ram_usage = options.client_settings.max_ram;
     var min_ram_usage = options.client_settings.min_ram;
 
-    var details = JSON.parse(fs.readFileSync("./details.json"));
+    var details = JSON.parse(fs.readFileSync(app.getPath("userData") + "details.json"));
     let user = {
        access_token: details.accessToken,
        client_token: details.clientToken,
@@ -30,15 +32,15 @@ function launchMinecraft() {
 
     let opts = {
         clientPackage: null,
-        authorization: Authenticator.getAuth("Chief"),
-        root: "./mc/",
+        authorization: user,
+        root: "mc/",
         version: {
-            number: "1.8.9",
+            number: options.mc_ver,
             type: "release",
         },
         memory: {
-            max: "5G",
-            min: "3G"
+            max: options.client_settings.max_ram,
+            min: options.client_settings.min_ram
         },
         window: {
             fullscreen: options.client_settings.fullscreen,
@@ -57,7 +59,7 @@ function launchMinecraft() {
 
     launcher_visibility_controller();
 
-    const {ipcRenderer} = require('electron');
+    const {ipcRenderer, app} = require('electron');
     launcher.on('close', (e) => {
         if(options.launcher_settings.launcher_visibility_on_launch == "Close") {
             ipcRenderer.send('close-app');
@@ -69,7 +71,7 @@ function launchMinecraft() {
 }
 
 function launcher_visibility_controller() {
-    let data = JSON.parse(fs.readFileSync('./settings.json'));
+    let data = JSON.parse(fs.readFileSync(app.getPath("userData") + 'settings.json'));
     const {ipcRenderer} = require('electron');
 
     if(data.launcher_settings.launcher_visibility_on_launch == "Close") {

@@ -8,39 +8,50 @@ function createMainWindow() {
     frame: false,
     webPreferences: {
       nodeIntegration: true,
+      enableRemoteModule: true
     }
   })
 
-  // win.webContents.openDevTools()
   win.loadFile('loading.html')
   win.resizable = false
   win.setFullScreenable = false
 
   const {ipcMain} = require('electron');
 
+  ipcMain.on('test', (event, arg) => {
+    console.log('test')
+  })
+
   ipcMain.on('resize-me-please', (event, arg) => {
+    console.log("resized and centered")
     win.setSize(1200,800)
     win.center();
+    
   })
 
   ipcMain.on('close-app', (event, arg) => {
+    console.log("exit")
     app.exit();
+    
   })
 
   ipcMain.on('minimize-app', (event, arg) => {
     win.minimize();
+    console.log("minimized")
   })
 
   ipcMain.on('hide-app', (event, arg) => {
     win.hide();
+    console.log("hidden")
   })
 
   ipcMain.on('show-app', (event, arg) => {
     win.show();
+    console.log("shown")
   })
 
   ipcMain.on('auth-success', (event, args) => {
-    win.webContents.openDevTools()
+    console.log("auth-success")
     win.loadFile('index.html')
     win.resizable = false
     win.setFullScreenable = false
