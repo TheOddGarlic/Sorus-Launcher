@@ -15,10 +15,11 @@ To build do: `npm run dist`
 
 ## Compatibility
 You can use a [table generator](https://www.tablesgenerator.com/markdown_tables) to generate a table
-| Added By      | Operating System | OS Build Tested on | NodeJS Version | Compatible |
-|---------------|------------------|--------------------|----------------|------------|
-| Hot Tutorials | Windows 10       | Build 18363        | v12.18.3       | Yes        |
-| GameGlitz     | Windows 10       | Build 19041        | v14.15.4       | Yes        |
-| GameGlitz     | MacOS High Sierra| Build 10.13        | v14.15.4       | Debatably  |
-| GameGlitz     | Ubuntu 18.04 LTS | Bionic Beaver      | v14.15.4       | Yes        |
-| SirObby       | Windows 10       | Build 21292        | v14.6.0        | Yes        |
+| Added By      | Operating System        | OS Build Tested on | NodeJS Version | Compatible |
+|---------------|-------------------------|--------------------|----------------|------------|
+| Hot Tutorials | Windows 10              | Build 18363        | v12.18.3       | Yes        |
+| GameGlitz     | Windows 10              | Build 19041        | v14.15.4       | Yes        |
+| GameGlitz     | MacOS High Sierra       | Build 10.13        | v14.15.4       | Debatably  |
+| GameGlitz     | Ubuntu 18.04 LTS        | Bionic Beaver      | v14.15.4       | Yes        |
+| SirObby       | Windows 10              | Build 21292        | v14.6.0        | Yes        |
+| Qewer33       | Manjaro KDE (Arch Linux)| v20.2.1            | v15.4.0        | Yes        |
