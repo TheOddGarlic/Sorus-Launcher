@@ -93,8 +93,6 @@
             var {version} = require('./package.json').version;
             const { autoUpdater } = require('electron-updater');
 
-            autoUpdater.checkForUpdatesAndNotify();
-
             autoUpdater.on('download-progress', (e) => {
                 console.log("Started download")
                 status.innerHTML = "DOWNLOADED " + e.percent + " AT " + e.bytesPerSecond;

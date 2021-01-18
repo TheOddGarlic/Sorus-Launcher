@@ -65,14 +65,6 @@ function createMainWindow() {
     win.resizable = false
     win.setFullScreenable = false
   })
-
-  ipcMain.on('updateLauncher', (event, args) => {
-    console.log("updateLauncher")
-    win.loadFile("updater.html")
-    win.resizable = false
-    win.setFullScreenable = false
-    win.center();
-  })
   
 
   autoUpdater.checkForUpdatesAndNotify();
@@ -83,7 +75,11 @@ function createMainWindow() {
   
   autoUpdater.on('update-available', (e) => {
       console.log("Update is available")
-      ipcRenderer.send('updateLauncher')
+      console.log("updateLauncher")
+      win.loadFile("updater.html")
+      win.resizable = false
+      win.setFullScreenable = false
+      win.center();
   })
 
   autoUpdater.on('update-not-available', (e) => {

@@ -7,9 +7,46 @@ function changePlayButtonStatus(string) {
     playbtn_status.innerText = string;
 }
 
+const { remote } = require("electron");
+const app = remote.app;
+
 var fs = require("fs");
 
-function launchMinecraft() {
+function downloadSorus(jarFileName) {
+    try {
+        if(!fs.existsSync(app.getPath("userData") + "mc/Sorus/client/")) {
+            fs.mkdirSync(app.getPath("userData") + "mc/Sorus/client/");
+        }
+        var dest = app.getPath("userData") + "mc/Sorus/client/"
+
+        let url;
+
+        if(jarFileName.toLowerCase() == "javaagent") { 
+            url = 'https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/environments/JavaAgent.jar'
+        } else if(jarFileName.toLowerCase() == "core") {
+            url = 'https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/Core.jar'
+        } else {
+            url = jarFileName;
+        }
+
+        console.log(url)
+        var file = fs.createWriteStream(dest);
+        var request = https.get(url, function(response) {
+            response.pipe(file);
+            file.on('finish', function() {
+                file.close(cb);
+            });
+        }).on('error', function(err) {
+            fs.unlink(dest);
+            if (cb) cb(err.message);
+        });
+    } catch (error) {
+        
+    }
+    
+}
+
+async function launchMinecraft() {
     const { Client, Authenticator } = require('minecraft-launcher-core');
     const launcher = new Client();
 
@@ -49,8 +86,12 @@ function launchMinecraft() {
             width: 900,
             height: 500
         },
-        // customArgs: "-javaagent:Sorus/client/1.8.9.jar=version=1.8.9"
+        customArgs: "-javaagent:Sorus/client/" + options.mc_ver + ".jar=version=" + options.mc_ver
     }
+
+    if(fs.existsSync(app.getPath("userData") + "Core.jar"))
+    await downloadSorus("core");
+
     playbtn_text.innerHTML = "LAUNCHING"
     playbtn_status.innerHTML = "Launching"
     launcher.launch(opts);
