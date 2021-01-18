@@ -1,5 +1,5 @@
 # Sorus-Launcher
-Shit code I know, but I'm not a good js dev and was rushing this. Anyway if anyone wants to improve it they can. Feel free to.
+This code was rushed as it is not final, if anyone is interested in committing I am completely open.
 
 ## Setting up project
 Setting up is easy, you just need [NodeJS](https://nodejs.org/en/) and [ElectronJS](https://www.electronjs.org/) installed.<br>
@@ -18,3 +18,6 @@ You can use a [table generator](https://www.tablesgenerator.com/markdown_tables)
 | Added By      | Operating System | OS Build Tested on | NodeJS Version | Compatible |
 |---------------|------------------|--------------------|----------------|------------|
 | Hot Tutorials | Windows 10       | Build 18363        | v12.18.3       | Yes        |
+| GameGlitz     | Windows 10       | Build 19041        | v14.15.4       | Yes        |
+| GameGlitz     | MacOS High Sierra| Build 10.13        | v14.15.4       | Debatably  |
+| GameGlitz     | Ubuntu 18.04 LTS | Bionic Beaver      | v14.15.4       | Yes        |
