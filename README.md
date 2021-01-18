@@ -21,3 +21,4 @@ You can use a [table generator](https://www.tablesgenerator.com/markdown_tables)
 | GameGlitz     | Windows 10       | Build 19041        | v14.15.4       | Yes        |
 | GameGlitz     | MacOS High Sierra| Build 10.13        | v14.15.4       | Debatably  |
 | GameGlitz     | Ubuntu 18.04 LTS | Bionic Beaver      | v14.15.4       | Yes        |
+| SirObby       | Windows 10       | Build 21292        | v14.6.0        | Yes        |
