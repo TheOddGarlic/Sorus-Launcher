@@ -8,7 +8,11 @@
     "pack": "electron-builder --dir",
     "dist": "electron-builder"
   },
-  "author": "Hot Tutorials",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SorusClient/Sorus-Launcher.git"
+  },
+  "author": "Hot Tutorials and any contributors",
   "license": "MIT",
   "dependencies": {
     "electron-updater": "^4.3.5",
@@ -20,24 +24,34 @@
     "electron": "^11.2.0"
   },
   "build": {
-    "appId": "ml.sorus.launcher",
-    "mac": {
-      "category": "your.app.category.type"
-    },
-    "productName": "Sorus Launcher",
-    "target": "NSIS",
-    "directories": {
-      "output": "build"
-    },
-    "nsis": {
-      "allowToChangeInstallationDirectory": true,
-      "oneClick": false
-    },
-    "files": [
-      "!settings.json",
-      "!details.json",
-      "!.gitignore",
-      "!mc/"
-    ]
+	"appId": "ml.sorus.launcher",
+	"mac": {
+	  "category": "ml.sorus.launcher"
+	},
+	"publish": [
+	  {
+		"provider": "github",
+		"owner": "SorusClient",
+		"repo": "Sorus-Launcher"
+	  }
+	],
+	"win": {
+	  "publish": "github"
+	},
+	"productName": "Sorus Launcher",
+	"target": "NSIS",
+	"directories": {
+	  "output": "build"
+	},
+	"nsis": {
+	  "allowToChangeInstallationDirectory": true,
+	  "oneClick": false
+	},
+	"files": [
+	  "!settings.json",
+	  "!details.json",
+	  "!.gitignore",
+	  "!mc/"
+	]
   }
 }

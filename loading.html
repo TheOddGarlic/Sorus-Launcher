@@ -149,6 +149,10 @@
             margin: 15px;
         }
 
+        * {
+            -webkit-user-select: none;
+        }
+
     </style>
 
 </head>
@@ -358,15 +362,11 @@
             overlay.style.pointerEvents = "all";
             logo.classList.add('logoAnimation');
 
-            const { autoUpdater } = require("electron-updater")
+            const {ipcRenderer} = require('electron');
 
-            autoUpdater.checkForUpdatesAndNotify();
-
+            console.log("Loading Launcher")
             remote.getGlobal("setTimeout")(function() {
-                console.log("ajigjiowajiogiowaijgjioawijgoiajwoigaoiwjgioawio")
                 const {ipcRenderer} = require('electron');
-
-                ipcRenderer.send('test')
                             
                 ipcRenderer.send('resize-me-please');
                 ipcRenderer.send('auth-success')

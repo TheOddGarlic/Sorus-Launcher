@@ -39,16 +39,45 @@
                 function miniApp() {
                     ipcRenderer.send('minimize-app')
                 }
+                function userApp() {
+                    if(document.getElementById('user_pop_up').style.display == "block") {
+                        document.getElementById('user_pop_up').style.display = "none";
+                        document.getElementById('upu-disabler').style.display = "none";
+                    } else {
+                        document.getElementById('user_pop_up').style.display = "block";
+                        document.getElementById('upu-disabler').style.display = "block";
+                    }
+                }
             </script>
         </ul>
     </header>
 
+    <div id="upu-disabler" class="upu-disabler" onclick="userApp()"></div>
+    <div id="user_pop_up">
+        <div class="upu-container">
+            <div>
+                <div class="upu-pfp-container">
+                    <img class="upu-pfp" id="upu-pfp" src="https://crafatar.com/avatars/f247be7c-5b82-41c6-9148-793ded77e71f" alt="">
+                </div>
+            </div>
+            <div>
+                <div class="upu-title" id="upu-title">Logged in as <b>If you see this report it!</b></div>
+                <div class="upu-content">
+                    <input class="sign-out" type="button" onclick="signoutofaccount();" value="Sign out?">
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="sidebar">
-        <!-- news -->
         <ul id="news-bar" class="side-news">
             <li>
                 <div class="entry-title">Launcher Released</div>
-                <div class="entry-content">Still in beta! Expect updates</div>
+                <div class="entry-content">
+                    Beta version of the Launcher has been released
+                    <br><br>
+                    Please report any bugs you experience.
+                </div>
                 <div class="entry-footer">
                     <img class="ef-pfp" src="https://crafatar.com/avatars/f247be7c5b8241c69148793ded77e71f" alt=""></img>
                     <div class="ef-name">Posted By <b>Hot Tutorials</b></div>
@@ -105,7 +134,12 @@
                               </form>
                         </li>
                         <li>
-                            <div>Launcher Version: 0.1.0</div>
+                            <div id="version-option-thing">Launcher Version: </div>
+                            <script>
+                                var { version } = require('./package.json');
+                                document.getElementById('version-option-thing').innerHTML = "Launcher Version: " + version.version;
+                                console.log(version.version)
+                            </script>
                         </li>
                     </ul>
                 </div>
@@ -118,14 +152,14 @@
     </div>
 
     <div class="play-btn-container">
-        <a class="playbtn" onclick="launchMinecraft();">
+        <a class="playbtn" id="playbtn" onclick="launchMinecraft();">
             <object style="position: absolute; left: 15px;" type="image/svg+xml" data="svg/play.svg" width="53px"></object>
             <div class="playbtn-text-cont">
                 <div class="playbtn-text" id="playbtn-text">PLAY</div>
                 <div class="playbtn-status" id="playbtn-status">Launch 1.8.9</div>
             </div>
         </a>
-        <a class="playbtn-ver-sel" onclick="versel();">
+        <a class="playbtn-ver-sel" id="playbtn_ver" onclick="versel();">
             <object type="image/svg+xml" data="svg/arrow.svg" style="color: #262626"></object>
         </a>
 
@@ -133,6 +167,7 @@
             function versel() {
                 const ver_disabler = document.getElementById("ver_disabler");
                 const ver_selector = document.getElementById("ver_selector");
+                var playbtn_status = document.getElementById("playbtn-status");
                 
                 if(ver_selector.style.display == "none") {
                     ver_selector.style.display = "flex";
@@ -140,6 +175,7 @@
                 } else {
                     ver_selector.style.display = "none";
                     ver_disabler.style.display = "none";
+                    playbtn_status.innerHTML = "Launch " + getSelectedVersion();
                     saveOptions();
                 }
 
@@ -210,6 +246,7 @@
 
     <script src="./js/optionsmanager.js"></script>
     <script src="./js/launch.js"></script>
+    <script src="./js/accounts.js"></script>
     
 </body>
 </html>

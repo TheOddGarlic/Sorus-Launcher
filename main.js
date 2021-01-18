@@ -1,4 +1,5 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow } = require('electron');
+const { autoUpdater } = require('electron-updater');
 const path = require('path');
 
 function createMainWindow() {
@@ -55,7 +56,38 @@ function createMainWindow() {
     win.loadFile('index.html')
     win.resizable = false
     win.setFullScreenable = false
-    
+  })
+
+  ipcMain.on('showLogin', (event, args) => {
+    win.loadFile('loading.html')
+    win.setSize(500, 500);
+    win.center();
+    win.resizable = false
+    win.setFullScreenable = false
+  })
+
+  ipcMain.on('updateLauncher', (event, args) => {
+    console.log("updateLauncher")
+    win.loadFile("updater.html")
+    win.resizable = false
+    win.setFullScreenable = false
+    win.center();
+  })
+  
+
+  autoUpdater.checkForUpdatesAndNotify();
+
+  autoUpdater.on('checking-for-update', (e) => {
+      console.log('Checking for updates')
+  })
+  
+  autoUpdater.on('update-available', (e) => {
+      console.log("Update is available")
+      ipcRenderer.send('updateLauncher')
+  })
+
+  autoUpdater.on('update-not-available', (e) => {
+      console.log("No updates found")
   })
 
 }

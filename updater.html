@@ -3,9 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Sorus Launcher - Loading</title>
+    <link rel="stylesheet" href="node_modules/typeface-raleway/index.css">
+
+    <style>
+        body {
+            background-color: #1D1D1D;
+            padding-top: 50px;
+        }
+        .update {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Raleway';
+        }
+        .title {
+            font-weight: 600;
+            font-size: 48px;
+            color: white;
+        }
+        .loadinggif {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 80%;
+            align-self: center;
+            padding-bottom: 10px;
+            margin-top: 125px;
+            HEIGHT: 50px;
+            margin-bottom: 25px;
+        }
+
+        .status {
+            text-align: center;
+            color: #444444;
+            font-feature-settings: 'lnum' 1;
+            font-weight: 700;
+        }
+
+        .top-container {
+            display: flex;
+            flex-direction: row-reverse;
+        }
+
+        #logo {
+            position: relative;
+            z-index: 99999;
+        }
+
+        .notice {
+            color: #444444;
+            font-weight: 700;
+            position: absolute;
+            bottom: 20px;
+            text-align: center;
+            width: 75%;
+        }
+
+        * {
+            -webkit-user-select: none;
+        }
+
+
+    </style>
+
 </head>
 <body>
-    
+    <div class="update" id="update">
+        <div class="top-container">
+            <div class="title">UPDATING</div>
+            <object id="logo" data="./svg/sorus.svg" type="image/svg+xml"></object>
+        </div>
+        <form class="loadinggif" action="">
+            <img src="media/loading.gif" alt="">
+        </form>
+        <div class="status" id="statusline1"></div>
+        <div class="status" id="statusline2"></div>
+    </div>
+
+    <script>
+        var {remote} = require('electron');
+        var app = remote.app;
+        let status = document.getElementById('statusline1');
+        let status2 = document.getElementById('statusline2');
+
+        window.onload = function() {
+            var {version} = require('./package.json').version;
+            const { autoUpdater } = require('electron-updater');
+
+            autoUpdater.checkForUpdatesAndNotify();
+
+            autoUpdater.on('download-progress', (e) => {
+                console.log("Started download")
+                status.innerHTML = "DOWNLOADED " + e.percent + " AT " + e.bytesPerSecond;
+                status2.innerHTML = e.transferred + "MB/" + e.total + "MB"
+            })
+
+            autoUpdater.on('update-downloaded', (e) => {
+                console.log("Finished Download")
+                status2.innerHTML = "RESTARTING APPLICATION";
+                status.innerHTML = "UPDATE DOWNLOADED"
+                remote.getGlobal("setTimeout")(function() {
+                    ipcRenderer.send("quitAndInstall");
+                })
+            })
+        }
+
+
+    </script>
 </body>
 </html>
