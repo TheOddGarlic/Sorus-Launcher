@@ -12,19 +12,19 @@
     <header class="navbar">
         <ul class="nav-ul">
             <li>
-                <a onclick="exitApp();"><object type="image/svg+xml" data="svg/exit.svg"></object></a>
+                <a class="button-circle gray" onclick="exitApp();"><object type="image/svg+xml" data="svg/exit.svg"></object></a>
             </li>
             <li>
-                <a onclick="miniApp();"><object type="image/svg+xml" data="svg/minimize.svg"></object></a>
+                <a class="button-circle gray" onclick="miniApp();"><object type="image/svg+xml" data="svg/minimize.svg"></object></a>
             </li>
             <li>
-                <a onclick="settingsApp()"><object type="image/svg+xml" data="svg/settings.svg"></object></a>
+                <a class="button-circle gray" onclick="settingsApp()"><object type="image/svg+xml" data="svg/settings.svg"></object></a>
             </li>
             <li>
-                <a onclick="userApp();"><object type="image/svg+xml" data="svg/user.svg"></object></a>
+                <a class="button-circle gray" onclick="userApp();"><object type="image/svg+xml" data="svg/user.svg"></object></a>
             </li>
             <li>
-                <a onclick="homeApp();"><object type="image/svg+xml" data="svg/home.svg"></object></a>
+                <a class="button-circle gray" onclick="homeApp();"><object type="image/svg+xml" data="svg/home.svg"></object></a>
             </li>
             <div class="navbar-left">
                 <img src="media/sorus_dark.png" alt="">
@@ -63,7 +63,7 @@
             <div>
                 <div class="upu-title" id="upu-title">Logged in as <b>If you see this report it!</b></div>
                 <div class="upu-content">
-                    <input class="sign-out" type="button" onclick="signoutofaccount();" value="Sign out?">
+                    <input class="button-small red" type="button" onclick="signoutofaccount();" value="Sign out">
                 </div>
             </div>
         </div>
@@ -143,7 +143,7 @@
                 </div>
             </li>
             <li>
-                <input class="save-settings-button" type="button" value="Save Settings" onclick="saveOptions()">
+                <input class="button blue" type="button" value="Save Settings" onclick="saveOptions()">
             </li>
         </ul>
 

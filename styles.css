@@ -3,6 +3,7 @@
 @import url('./css/sidebar.css');
 @import url('./css/version.css');
 @import url('./css/animate.css');
+@import url('./css/controls.css');
 
 * {
     -webkit-user-select: none;
@@ -162,22 +163,4 @@ img {
     position: absolute;
     top: 50%;
     left: 50%;
-  }
-  
-  .sign-out {
-    border: 3px solid rgb(40, 40, 40);
-    border-radius: 5px;
-    background-color: rgba(40,40,40, 0.6);
-    color: white;
-    font-family: 'Raleway', sans-serif;
-    font-weight: 300;
-    padding: 5px;
-    transition: 0.3s;
-    outline: none;
-  }
-  
-  .sign-out:hover {
-    background-color: rgb(83, 1, 1);
-    border: 3px solid rgb(59, 1, 1);
-    cursor: pointer;
   }

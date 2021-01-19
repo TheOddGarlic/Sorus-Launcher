@@ -56,11 +56,11 @@
 
 
 .sidebar li {
-    border-radius: 20px;
+    border-radius: 5px;
     background-color: var(--back-bg);
     height: 230px;
     margin-left: 10px;
-    margin-right: 10px;
+    margin-right: 3px;
     padding: 10px;
     padding-top: 5px;
     color: white;
@@ -80,7 +80,8 @@
 .entry-content {
     font-size: 14px;
     font-weight: 300;
-    margin-top: 5px;
+    margin-top: 6px;
+    margin-bottom: 6px;
 }
 
 .entry-content li {
@@ -151,7 +152,7 @@ input[type="range"]:focus {
 }
 
 ::-webkit-slider-runnable-track {
-    background: #ddd;
+    background: #383838;
 }
 
 ::-webkit-slider-thumb {
@@ -243,8 +244,7 @@ input[type="range"]:focus {
 }
 
 .save-settings-button {
-    background-color: #008bd4;
-    border: none;
+    background-color: #0075b2;
     border-radius: 10px;
     color: white;
     font-size: 16px;
@@ -257,6 +257,7 @@ input[type="range"]:focus {
 }
 
 .save-settings-button:hover {
+    color: white;
     background-color: #0075b2;
 }
 
