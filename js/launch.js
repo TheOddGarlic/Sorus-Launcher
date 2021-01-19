@@ -12,6 +12,8 @@ const app = remote.app;
 
 var fs = require("fs");
 
+var options = JSON.parse(fs.readFileSync(app.getPath("userData") + "/settings.json"));
+
 function downloadSorus(jarFileName, name) {
     var https = require('https');
     try {
@@ -38,6 +40,50 @@ function downloadSorus(jarFileName, name) {
     
 }
 
+async function checkAndDownloadSorus() {
+    if(!fs.existsSync(app.getPath("userData") + "/mc/Sorus/client/Core.jar")) {
+        try {
+            playbtn_status.innerHTML = "Downloading Core.jar 1/3"
+            await downloadSorus("https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/Core.jar", "Core.jar");
+            console.log("Downloaded Core.jar")
+        } catch (error) {
+            console.error(error)
+        }
+    }
+    if(!fs.existsSync(app.getPath("userData") + "/mc/Sorus/client/JavaAgent.jar")) {
+        try {
+            playbtn_status.innerHTML = "Downloading JavaAgent.jar 2/3"
+            await downloadSorus("https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/environments/JavaAgent.jar", "JavaAgent.jar");
+            console.log("Downloaded JavaAgent.jar")
+        } catch (error) {
+            console.error(error)
+        }
+    }
+    if(!fs.existsSync(app.getPath("userData") + "/mc/Sorus/client/" + options.mc_ver + ".jar")) {
+        try {
+            playbtn_status.innerHTML = "Downloading Sorus " + options.mc_ver + " 3/3"
+            await downloadSorus("https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/versions/" + options.mc_ver + ".jar", options.mc_ver + ".jar");
+            console.log("Downloaded " + options.mc_ver + ".jar")
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    playbtn_status.innerHTML = "Downloaded required files"
+
+    if(!fs.existsSync(app.getPath("userData") + "/mc/Sorus/client/" + options.mc_ver + "_compiled.jar")) {
+        playbtn_status.innerHTML = "Extracting " + options.mc_ver + ".jar 1/3"
+        await extractJarFiles(options.mc_ver);
+        playbtn_status.innerHTML = "Extracting Core.jar 2/3"
+        await extractJarFiles("Core");
+        playbtn_status.innerHTML = "Extracting JavaAgent.jar 3/3"
+        await extractJarFiles("JavaAgent");
+        playbtn_status.innerHTML = "Building Sorus " + options.mc_ver
+        await archiveDir(options.mc_ver);
+        playbtn_status.innerHTML = "Built Sorus " + options.mc_ver
+    }
+}
+
 async function launchMinecraft() {
     const { Client, Authenticator } = require('minecraft-launcher-core');
     const launcher = new Client();
@@ -45,8 +91,6 @@ async function launchMinecraft() {
     playbtn.style.backgroundColor = "#a13b3b";
     playbtn_ver.style.backgroundColor = "#a13b3b";
     playbtn_text.innerHTML = "STARTING"
-
-    var options = JSON.parse(fs.readFileSync(app.getPath("userData") + "/settings.json"));
 
     var max_ram_usage = options.client_settings.max_ram;
     var min_ram_usage = options.client_settings.min_ram;
@@ -60,6 +104,9 @@ async function launchMinecraft() {
        selected_profile: details.selectedProfile,
        user_properties: details.user_properties 
     }
+
+    playbtn_status.innerHTML = "Checking for Sorus Installation"
+    await checkAndDownloadSorus();
 
     let opts = {
         clientPackage: null,
@@ -78,44 +125,29 @@ async function launchMinecraft() {
             width: 900,
             height: 500
         },
-        customArgs: "-javaagent:Sorus/client/" + options.mc_ver + "_compiled.jar=version=" + options.mc_ver
+        customArgs: `-javaagent:`+ app.getPath("userData") +`/mc/Sorus/client/` + options.mc_ver + `_compiled.jar=version=` + options.mc_ver
     }
 
-    if(!fs.existsSync(app.getPath("userData") + "/mc/Sorus/client/Core.jar")) {
-        try {
-            await downloadSorus("https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/Core.jar", "Core.jar");
-            console.log("Downloaded Core.jar")
-        } catch (error) {
-            console.error(error)
-        }
-    }
-    if(!fs.existsSync(app.getPath("userData") + "/mc/Sorus/client/JavaAgent.jar")) {
-        try {
-            await downloadSorus("https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/environments/JavaAgent.jar", "JavaAgent.jar");
-            console.log("Downloaded JavaAgent.jar")
-        } catch (error) {
-            console.error(error)
-        }
-    }
-    if(!fs.existsSync(app.getPath("userData") + "/mc/Sorus/client/" + options.mc_ver + ".jar")) {
-        try {
-            await downloadSorus("https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/versions/" + options.mc_ver + ".jar", options.mc_ver + ".jar");
-            console.log("Downloaded " + options.mc_ver + ".jar")
-        } catch (error) {
-            console.error(error)
-        }
-    }
+    fs.readdirSync(app.getPath("userData") + "/mc/").forEach(file => {
+        console.log(file);
+    });
 
-    if(!fs.existsSync(app.getPath("userData") + "/mc/Sorus/client/" + options.mc_ver + "_compiled.jar")) {
-        await extractJarFiles("Core");
-        await extractJarFiles("JavaAgent");
-        await extractJarFiles(options.mc_ver);
-        await archiveDir(options.mc_ver);
+    
+    if(fs.existsSync(app.getPath("userData") + "/mc/Sorus/client/" + options.mc_ver + "_compiled.jar")) {
+        playbtn_text.innerHTML = "LAUNCHING"
+        playbtn_status.innerHTML = "Launching"
+        setTimeout(launcher.launch(opts), 7500)
+    } else {
+        playbtn_text.innerHTML = "STOPPING"
+        playbtn_status.innerHTML = "Error Occured - Sorus jar not found"
+        setTimeout(function() {
+            playbtn.style.backgroundColor = "#3BA152";
+            playbtn_ver.style.backgroundColor = "#3BA152";
+            playbtn_text.innerHTML = "PLAY"
+            playbtn_status.innerHTML = "Launch " + getSelectedVersion();
+        }, 5000)
     }
-
-    playbtn_text.innerHTML = "LAUNCHING"
-    playbtn_status.innerHTML = "Launching"
-    launcher.launch(opts);
+    
 
     launcher.on('download-status', (e) => {
         playbtn_status.innerHTML = "Starting to download assets"
@@ -137,6 +169,7 @@ async function launchMinecraft() {
         playbtn_ver.style.backgroundColor = "#3BA152";
         playbtn_text.innerHTML = "PLAY"
         playbtn_status.innerHTML = "Launch " + getSelectedVersion();
+
         if(options.launcher_settings.launcher_visibility_on_launch == "Close") {
             ipcRenderer.send('close-app');
         } else {

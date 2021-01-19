@@ -24,11 +24,10 @@ async function archiveDir(name) {
 		throw err;
 	});
 
-	archive.pipe(output);
+	await archive.pipe(output);
 
-	archive.directory(app.getPath("userData") + '/mc/Sorus/client/temp', false);
+	await archive.directory(app.getPath("userData") + '/mc/Sorus/client/temp', false);
 
-	archive.directory(app.getPath("userData") + '/mc/Sorus/client/temp', 'new-subdir');
-
-	archive.finalize();
+	await archive.finalize();
+	fs.rmdirSync(app.getPath("userData") + "/mc/Sorus/client/temp", { recursive: true });
 }
