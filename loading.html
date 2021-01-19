@@ -242,7 +242,7 @@
                             clientToken: clientToken
                         }
                         let jsonData = JSON.stringify(details, null, 4);
-                        fs.writeFileSync(app.getPath("userData") + "details.json", jsonData, function(err) {
+                        fs.writeFileSync(app.getPath("userData") + "/details.json", jsonData, function(err) {
                             if(err) {
                                 console.log(err);
                             }
@@ -272,7 +272,7 @@
 
         function refreshAccessToken() {
             var fs = require('fs');
-            var details = JSON.parse(fs.readFileSync(app.getPath("userData") + "details.json"))
+            var details = JSON.parse(fs.readFileSync(app.getPath("userData") + "/details.json"))
 
             var xhr = new XMLHttpRequest();
             var url = "http://authserver.mojang.com/refresh";
@@ -290,7 +290,7 @@
                         clientToken: clientToken
                     }
 
-                    let oldDetails = JSON.parse(fs.readFileSync(app.getPath("userData") + "details.json"))
+                    let oldDetails = JSON.parse(fs.readFileSync(app.getPath("userData") + "/details.json"))
 
                     let newDetails = {
                         accessToken: details.accessToken,
@@ -303,7 +303,7 @@
                     }
 
                     let jsonData = JSON.stringify(newDetails, null, 4);
-                        fs.writeFileSync(app.getPath("userData") + "details.json", jsonData, function(err) {
+                        fs.writeFileSync(app.getPath("userData") + "/details.json", jsonData, function(err) {
                             if(err) {
                                 console.log(err);
                             }
@@ -328,7 +328,7 @@
 
         function validate() {
             var fs = require('fs');
-            var details = JSON.parse(fs.readFileSync(app.getPath("userData") + "details.json"))
+            var details = JSON.parse(fs.readFileSync(app.getPath("userData") + "/details.json"))
 
             var xhr = new XMLHttpRequest();
             var url = "http://authserver.mojang.com/validate";

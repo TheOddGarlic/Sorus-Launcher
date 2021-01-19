@@ -62,7 +62,7 @@ function saveOptions() {
 
 	let fs = require('fs');
 	let jsonData = JSON.stringify(settings, null, 4);
-	fs.writeFileSync(app.getPath("userData") + "settings.json", jsonData, function(err) {
+	fs.writeFileSync(app.getPath("userData") + "/settings.json", jsonData, function(err) {
 		if(err) {
 			console.log(err);
 		}
@@ -78,8 +78,8 @@ window.onload = function() {
 	const { remote } = require('electron');
 	const app = remote.app;
 	try {
-		if(fs.existsSync(app.getPath("userData") + 'settings.json')) {
-			let data = JSON.parse(fs.readFileSync(app.getPath("userData") + 'settings.json'));
+		if(fs.existsSync(app.getPath("userData") + '/settings.json')) {
+			let data = JSON.parse(fs.readFileSync(app.getPath("userData") + '/settings.json'));
 
 			min = data.client_settings.min_ram;
 			max = data.client_settings.max_ram;
@@ -107,7 +107,7 @@ window.onload = function() {
 			var launcher_visibility_on_launch = data.launcher_settings.launcher_visibility_on_launch;
 			launcher_visibility.value = launcher_visibility_on_launch;
 
-			var details = JSON.parse(fs.readFileSync(app.getPath("userData") + "details.json"));
+			var details = JSON.parse(fs.readFileSync(app.getPath("userData") + "/details.json"));
 
 			upu_pfp.src = "https://crafatar.com/avatars/" + details.uuid;
 			upu_title.innerHTML = "Logged in as <b>" + details.username + "<b>"
@@ -142,7 +142,7 @@ window.onload = function() {
 		
 			let fs = require('fs');
 			let jsonData = JSON.stringify(settings, null, 4);
-			fs.writeFileSync(app.getPath("userData") + "settings.json", jsonData, function(err) {
+			fs.writeFileSync(app.getPath("userData") + "/settings.json", jsonData, function(err) {
 				if(err) {
 					console.log(err);
 				}

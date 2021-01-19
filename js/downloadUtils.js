@@ -4,7 +4,7 @@ var fs = require('fs');
 const { app } = require('electron');
 
 async function downloadCoreJar(cb) {
-    var dest = app.getPath("userData") + "mc/Sorus/client/"
+    var dest = app.getPath("userData") + "/mc/Sorus/client/"
 
     let url = 'https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/Core.jar';
     var file = fs.createWriteStream(dest);

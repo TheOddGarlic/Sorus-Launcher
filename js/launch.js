@@ -12,7 +12,7 @@ const app = remote.app;
 
 var fs = require("fs");
 
-function downloadSorus(jarFileName) {
+function downloadSorus(jarFileName, name) {
     var https = require('https');
     try {
         if(!fs.existsSync(app.getPath("userData") + "/mc/Sorus/client/")) {
@@ -20,48 +20,18 @@ function downloadSorus(jarFileName) {
         }
         var dest = app.getPath("userData") + "/mc/Sorus/client/"
 
-        let url;
+        let url = jarFileName;
 
-        if(jarFileName.toLowerCase() == "javaagent") { 
-            url = 'https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/environments/JavaAgent.jar'
-            console.log(url)
-            var file = fs.createWriteStream(dest);
-            var request = https.get(url, function(response) {
-                response.pipe(file);
-                file.on('finish', function() {
-                    file.close(cb);
-                });
-            }).on('error', function(err) {
-                fs.unlink(dest);
-                if (cb) cb(err.message);
+        console.log(url)
+        var file = fs.createWriteStream(dest + name);
+        var request = https.get(url, function(response) {
+            response.pipe(file);
+            file.on('finish', function() {
+                file.close(console.log("File finished downloading"));
             });
-        } else if(jarFileName.toLowerCase() == "core") {
-            url = 'https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/Core.jar'
-            console.log(url)
-            var file = fs.createWriteStream(dest);
-            var request = https.get(url, function(response) {
-                response.pipe(file);
-                file.on('finish', function() {
-                    file.close(cb);
-                });
-            }).on('error', function(err) {
-                fs.unlink(dest);
-                if (cb) cb(err.message);
-            });
-        } else {
-            url = jarFileName;
-            console.log(url)
-            var file = fs.createWriteStream(dest);
-            var request = https.get(url, function(response) {
-                response.pipe(file);
-                file.on('finish', function() {
-                    file.close(cb);
-                });
-            }).on('error', function(err) {
-                fs.unlink(dest);
-                if (cb) cb(err.message);
-            });
-        }
+        }).on('error', function(err) {
+             fs.unlink(dest);
+        });
     } catch (error) {
         console.error(error)
     }
@@ -76,12 +46,12 @@ async function launchMinecraft() {
     playbtn_ver.style.backgroundColor = "#a13b3b";
     playbtn_text.innerHTML = "STARTING"
 
-    var options = JSON.parse(fs.readFileSync(app.getPath("userData") + "settings.json"));
+    var options = JSON.parse(fs.readFileSync(app.getPath("userData") + "/settings.json"));
 
     var max_ram_usage = options.client_settings.max_ram;
     var min_ram_usage = options.client_settings.min_ram;
 
-    var details = JSON.parse(fs.readFileSync(app.getPath("userData") + "details.json"));
+    var details = JSON.parse(fs.readFileSync(app.getPath("userData") + "/details.json"));
     let user = {
        access_token: details.accessToken,
        client_token: details.clientToken,
@@ -113,7 +83,7 @@ async function launchMinecraft() {
 
     if(!fs.existsSync(app.getPath("userData") + "/mc/Sorus/client/Core.jar")) {
         try {
-            await downloadSorus("core");
+            await downloadSorus("https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/Core.jar", "Core.jar");
             console.log("Downloaded Core.jar")
         } catch (error) {
             console.error(error)
@@ -121,7 +91,7 @@ async function launchMinecraft() {
     }
     if(!fs.existsSync(app.getPath("userData") + "/mc/Sorus/client/JavaAgent.jar")) {
         try {
-            await downloadSorus("javaagent");
+            await downloadSorus("https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/environments/JavaAgent.jar", "JavaAgent.jar");
             console.log("Downloaded JavaAgent.jar")
         } catch (error) {
             console.error(error)
@@ -129,7 +99,7 @@ async function launchMinecraft() {
     }
     if(!fs.existsSync(app.getPath("userData") + "/mc/Sorus/client/" + options.mc_ver + ".jar")) {
         try {
-            await downloadSorus("https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/versions/" + options.mc_ver + ".jar");
+            await downloadSorus("https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/versions/" + options.mc_ver + ".jar", options.mc_ver + ".jar");
             console.log("Downloaded " + options.mc_ver + ".jar")
         } catch (error) {
             console.error(error)
