@@ -78,7 +78,7 @@ async function launchMinecraft() {
             width: 900,
             height: 500
         },
-        // customArgs: "-javaagent:Sorus/client/" + options.mc_ver + ".jar=version=" + options.mc_ver
+        customArgs: "-javaagent:Sorus/client/" + options.mc_ver + "_compiled.jar=version=" + options.mc_ver
     }
 
     if(!fs.existsSync(app.getPath("userData") + "/mc/Sorus/client/Core.jar")) {
@@ -106,7 +106,12 @@ async function launchMinecraft() {
         }
     }
 
-    // await extractJarFiles();
+    if(!fs.existsSync(app.getPath("userData") + "/mc/Sorus/client/" + options.mc_ver + "_compiled.jar")) {
+        await extractJarFiles("Core");
+        await extractJarFiles("JavaAgent");
+        await extractJarFiles(options.mc_ver);
+        await archiveDir(options.mc_ver);
+    }
 
     playbtn_text.innerHTML = "LAUNCHING"
     playbtn_status.innerHTML = "Launching"
