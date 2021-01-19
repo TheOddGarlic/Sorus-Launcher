@@ -111,7 +111,7 @@ async function launchMinecraft() {
     let opts = {
         clientPackage: null,
         authorization: user,
-        root: "mc/",
+        root: app.getPath("userData") + "/mc/",
         version: {
             number: options.mc_ver,
             type: "release",
@@ -136,7 +136,12 @@ async function launchMinecraft() {
     if(fs.existsSync(app.getPath("userData") + "/mc/Sorus/client/" + options.mc_ver + "_compiled.jar")) {
         playbtn_text.innerHTML = "LAUNCHING"
         playbtn_status.innerHTML = "Launching"
-        setTimeout(launcher.launch(opts), 7500)
+        if(options.mc_ver == "1.7.10") {
+            playbtn_text.innerHTML = "STOPPING"
+            playbtn_status.innerHTML = "1.7.10 is currently broken"
+        } else {
+            setTimeout(launcher.launch(opts), 7500)
+        }
     } else {
         playbtn_text.innerHTML = "STOPPING"
         playbtn_status.innerHTML = "Error Occured - Sorus jar not found"
