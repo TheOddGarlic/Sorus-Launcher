@@ -19,33 +19,3 @@ async function downloadCoreJar(cb) {
     });
 };
 
-async function downloadVersionJar(version, cb) {
-    var dest = app.getPath("userData") + "mc/Sorus/client/"
-
-    var url = 'https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/versions/'+ version + '.jar'
-    var file = fs.createWriteStream(dest);
-    var request = https.get(url, function(response) {
-        response.pipe(file);
-        file.on('finish', function() {
-            file.close(cb);
-        });
-    }).on('error', function(err) {
-        fs.unlink(dest);
-        if (cb) cb(err.message);
-    });
-}
-
-async function downloadJavaAgentJar(cb) {
-    var dest = app.getPath("userData") + "mc/Sorus/client/"
-    var url = 'https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/environments/JavaAgent.jar'
-    var file = fs.createWriteStream(dest);
-    var request = https.get(url, function(response) {
-        response.pipe(file);
-        file.on('finish', function() {
-            file.close(cb);
-        });
-    }).on('error', function(err) {
-        fs.unlink(dest);
-        if (cb) cb(err.message);
-    });
-}

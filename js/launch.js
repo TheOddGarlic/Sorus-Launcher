@@ -13,35 +13,57 @@ const app = remote.app;
 var fs = require("fs");
 
 function downloadSorus(jarFileName) {
+    var https = require('https');
     try {
-        if(!fs.existsSync(app.getPath("userData") + "mc/Sorus/client/")) {
-            fs.mkdirSync(app.getPath("userData") + "mc/Sorus/client/");
+        if(!fs.existsSync(app.getPath("userData") + "/mc/Sorus/client/")) {
+            fs.mkdirSync(app.getPath("userData") + "/mc/Sorus/client/");
         }
-        var dest = app.getPath("userData") + "mc/Sorus/client/"
+        var dest = app.getPath("userData") + "/mc/Sorus/client/"
 
         let url;
 
         if(jarFileName.toLowerCase() == "javaagent") { 
             url = 'https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/environments/JavaAgent.jar'
+            console.log(url)
+            var file = fs.createWriteStream(dest);
+            var request = https.get(url, function(response) {
+                response.pipe(file);
+                file.on('finish', function() {
+                    file.close(cb);
+                });
+            }).on('error', function(err) {
+                fs.unlink(dest);
+                if (cb) cb(err.message);
+            });
         } else if(jarFileName.toLowerCase() == "core") {
             url = 'https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/Core.jar'
+            console.log(url)
+            var file = fs.createWriteStream(dest);
+            var request = https.get(url, function(response) {
+                response.pipe(file);
+                file.on('finish', function() {
+                    file.close(cb);
+                });
+            }).on('error', function(err) {
+                fs.unlink(dest);
+                if (cb) cb(err.message);
+            });
         } else {
             url = jarFileName;
-        }
-
-        console.log(url)
-        var file = fs.createWriteStream(dest);
-        var request = https.get(url, function(response) {
-            response.pipe(file);
-            file.on('finish', function() {
-                file.close(cb);
+            console.log(url)
+            var file = fs.createWriteStream(dest);
+            var request = https.get(url, function(response) {
+                response.pipe(file);
+                file.on('finish', function() {
+                    file.close(cb);
+                });
+            }).on('error', function(err) {
+                fs.unlink(dest);
+                if (cb) cb(err.message);
             });
-        }).on('error', function(err) {
-            fs.unlink(dest);
-            if (cb) cb(err.message);
-        });
+        }
     } catch (error) {
-        
+        console.error(error)
     }
     
 }
@@ -86,11 +108,35 @@ async function launchMinecraft() {
             width: 900,
             height: 500
         },
-        customArgs: "-javaagent:Sorus/client/" + options.mc_ver + ".jar=version=" + options.mc_ver
+        // customArgs: "-javaagent:Sorus/client/" + options.mc_ver + ".jar=version=" + options.mc_ver
     }
 
-    if(fs.existsSync(app.getPath("userData") + "Core.jar"))
-    await downloadSorus("core");
+    if(!fs.existsSync(app.getPath("userData") + "/mc/Sorus/client/Core.jar")) {
+        try {
+            await downloadSorus("core");
+            console.log("Downloaded Core.jar")
+        } catch (error) {
+            console.error(error)
+        }
+    }
+    if(!fs.existsSync(app.getPath("userData") + "/mc/Sorus/client/JavaAgent.jar")) {
+        try {
+            await downloadSorus("javaagent");
+            console.log("Downloaded JavaAgent.jar")
+        } catch (error) {
+            console.error(error)
+        }
+    }
+    if(!fs.existsSync(app.getPath("userData") + "/mc/Sorus/client/" + options.mc_ver + ".jar")) {
+        try {
+            await downloadSorus("https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/versions/" + options.mc_ver + ".jar");
+            console.log("Downloaded " + options.mc_ver + ".jar")
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    // await extractJarFiles();
 
     playbtn_text.innerHTML = "LAUNCHING"
     playbtn_status.innerHTML = "Launching"
