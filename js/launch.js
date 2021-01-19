@@ -185,7 +185,7 @@ async function launchMinecraft() {
 }
 
 function launcher_visibility_controller() {
-    let data = JSON.parse(fs.readFileSync(app.getPath("userData") + 'settings.json'));
+    let data = JSON.parse(fs.readFileSync(app.getPath("userData") + '/settings.json'));
 
     if(data.launcher_settings.launcher_visibility_on_launch == "Close") {
         ipcRenderer.send("hide-app");
