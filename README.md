@@ -28,7 +28,7 @@ You can use a [table generator](https://www.tablesgenerator.com/markdown_tables)
 ```
 MIT License
 
-Copyright (c) 2021 Danterus
+Copyright (c) 2021 Sorus Author
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
