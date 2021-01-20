@@ -15,11 +15,11 @@
 		"author": "Hot Tutorials and any contributors",
 		"license": "MIT",
 		"dependencies": {
-				"archiver": "^5.2.0",
 				"electron-updater": "^4.3.5",
 				"extract-zip": "^2.0.1",
 				"minecraft-launcher-core": "^3.16.1",
-				"typeface-raleway": "^1.1.13"
+				"typeface-raleway": "^1.1.13",
+				"zip-a-folder": "0.0.12"
 		},
 		"devDependencies": {
 				"electron-builder": "^22.9.1",

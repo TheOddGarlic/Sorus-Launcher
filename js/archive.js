@@ -9,25 +9,25 @@ async function extractJarFiles(name) {
   	}
 }
 
-async function archiveDir(name) {
-	var archiver = require('archiver');
+// async function archiveDir(name) {
+// 	var archiver = require('archiver');
 
-	var output = fs.createWriteStream(app.getPath("userData") + "/mc/Sorus/client/" + name + "_compiled.jar");
-	var archive = archiver('zip');
+// 	var output = fs.createWriteStream(app.getPath("userData") + "/mc/Sorus/client/" + name + "_compiled.jar");
+// 	var archive = archiver('zip');
 
-	output.on('close', function () {
-		console.log(archive.pointer() + ' total bytes');
-		console.log('archiver has been finalized and the output file descriptor has closed.');
-	});
+// 	output.on('close', function () {
+// 		console.log(archive.pointer() + ' total bytes');
+// 		console.log('archiver has been finalized and the output file descriptor has closed.');
+// 	});
 
-	archive.on('error', function(err){
-		throw err;
-	});
+// 	archive.on('error', function(err){
+// 		throw err;
+// 	});
 
-	await archive.pipe(output);
+// 	await archive.pipe(output);
 
-	await archive.directory(app.getPath("userData") + '/mc/Sorus/client/temp', false);
+// 	await archive.directory(app.getPath("userData") + '/mc/Sorus/client/temp', false);
 
-	await archive.finalize();
-	fs.rmdirSync(app.getPath("userData") + "/mc/Sorus/client/temp", { recursive: true });
-}
+// 	await archive.finalize();
+// 	fs.rmdirSync(app.getPath("userData") + "/mc/Sorus/client/temp", { recursive: true });
+// }

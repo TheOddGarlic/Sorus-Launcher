@@ -32,7 +32,6 @@ function getSelectedVersion() {
 	var val = getRadioVal( document.getElementById('ver_form'), 'version' );
 
 	selected_version = val;
-	console.log(selected_version);
 	return(selected_version);
 }
 

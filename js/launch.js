@@ -14,22 +14,20 @@ var fs = require("fs");
 
 var options = JSON.parse(fs.readFileSync(app.getPath("userData") + "/settings.json"));
 
-function downloadSorus(jarFileName, name) {
+function downloadSorus(jarFileName, name, process) {
     var https = require('https');
-    try {
-        if(!fs.existsSync(app.getPath("userData") + "/mc/Sorus/client/")) {
-            fs.mkdirSync(app.getPath("userData") + "/mc/Sorus/client/");
-        }
+    try {     
         var dest = app.getPath("userData") + "/mc/Sorus/client/"
-
         let url = jarFileName;
-
         console.log(url)
-        var file = fs.createWriteStream(dest + name);
+        var file = fs.createWriteStream(dest + name + ".jar");
         var request = https.get(url, function(response) {
             response.pipe(file);
             file.on('finish', function() {
-                file.close(console.log("File finished downloading"));
+                extractJarFiles(name);
+                file.close(console.log(name + ".jar finished downloading"));
+                playbtn_status.innerHTML = "Extracting " + name + ".jar " + process
+                
             });
         }).on('error', function(err) {
              fs.unlink(dest);
@@ -39,48 +37,33 @@ function downloadSorus(jarFileName, name) {
     }
     
 }
-
 async function checkAndDownloadSorus() {
     if(!fs.existsSync(app.getPath("userData") + "/mc/Sorus/client/Core.jar")) {
         try {
             playbtn_status.innerHTML = "Downloading Core.jar 1/3"
-            await downloadSorus("https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/Core.jar", "Core.jar");
+            await downloadSorus("https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/Core.jar", "Core", "1/3");
             console.log("Downloaded Core.jar")
-        } catch (error) {
-            console.error(error)
-        }
-    }
-    if(!fs.existsSync(app.getPath("userData") + "/mc/Sorus/client/JavaAgent.jar")) {
-        try {
-            playbtn_status.innerHTML = "Downloading JavaAgent.jar 2/3"
-            await downloadSorus("https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/environments/JavaAgent.jar", "JavaAgent.jar");
-            console.log("Downloaded JavaAgent.jar")
         } catch (error) {
             console.error(error)
         }
     }
     if(!fs.existsSync(app.getPath("userData") + "/mc/Sorus/client/" + options.mc_ver + ".jar")) {
         try {
-            playbtn_status.innerHTML = "Downloading Sorus " + options.mc_ver + " 3/3"
-            await downloadSorus("https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/versions/" + options.mc_ver + ".jar", options.mc_ver + ".jar");
+            playbtn_status.innerHTML = "Downloading Sorus " + options.mc_ver + " 2/3"
+            await downloadSorus("https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/versions/" + options.mc_ver + ".jar", options.mc_ver, "2/3");
             console.log("Downloaded " + options.mc_ver + ".jar")
         } catch (error) {
             console.error(error)
         }
     }
-
-    playbtn_status.innerHTML = "Downloaded required files"
-
-    if(!fs.existsSync(app.getPath("userData") + "/mc/Sorus/client/" + options.mc_ver + "_compiled.jar")) {
-        playbtn_status.innerHTML = "Extracting " + options.mc_ver + ".jar 1/3"
-        await extractJarFiles(options.mc_ver);
-        playbtn_status.innerHTML = "Extracting Core.jar 2/3"
-        await extractJarFiles("Core");
-        playbtn_status.innerHTML = "Extracting JavaAgent.jar 3/3"
-        await extractJarFiles("JavaAgent");
-        playbtn_status.innerHTML = "Building Sorus " + options.mc_ver
-        await archiveDir(options.mc_ver);
-        playbtn_status.innerHTML = "Built Sorus " + options.mc_ver
+    if(!fs.existsSync(app.getPath("userData") + "/mc/Sorus/client/JavaAgent.jar")) {
+        try {
+            playbtn_status.innerHTML = "Downloading JavaAgent.jar 3/3"
+            await downloadSorus("https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/environments/JavaAgent.jar", "JavaAgent", "3/3");
+            console.log("Downloaded JavaAgent.jar") 
+        } catch (error) {
+            console.error(error)
+        }
     }
 }
 
@@ -105,6 +88,9 @@ async function launchMinecraft() {
        user_properties: details.user_properties 
     }
 
+    if(!fs.existsSync(app.getPath("userData") + "/mc/Sorus/client/")) {
+        fs.mkdirSync(app.getPath("userData") + "/mc/Sorus/client/", {recursive: true}, err => console.error(err));
+    }
     playbtn_status.innerHTML = "Checking for Sorus Installation"
     await checkAndDownloadSorus();
 
@@ -127,11 +113,6 @@ async function launchMinecraft() {
         },
         customArgs: `-javaagent:`+ app.getPath("userData") +`/mc/Sorus/client/` + options.mc_ver + `_compiled.jar=version=` + options.mc_ver
     }
-
-    fs.readdirSync(app.getPath("userData") + "/mc/").forEach(file => {
-        console.log(file);
-    });
-
     
     if(fs.existsSync(app.getPath("userData") + "/mc/Sorus/client/" + options.mc_ver + "_compiled.jar")) {
         playbtn_text.innerHTML = "LAUNCHING"
@@ -140,7 +121,7 @@ async function launchMinecraft() {
             playbtn_text.innerHTML = "STOPPING"
             playbtn_status.innerHTML = "1.7.10 is currently broken"
         } else {
-            setTimeout(launcher.launch(opts), 7500)
+            setTimeout(launcher.launch(opts), 15000)
         }
     } else {
         playbtn_text.innerHTML = "STOPPING"
