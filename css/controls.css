@@ -41,7 +41,7 @@
     background-color: var(--blue-color);
 
     border: none;
-    border-radius: 7px;
+    border-radius: 4px;
 
     font-size: 12px;
     text-decoration: none;
@@ -96,16 +96,13 @@
     
     padding: 5px;
     margin-top: 8px;
+    
+    cursor: pointer;
 }
 
 .dropdown:focus {
     outline: none;
     box-shadow: none;
-}
-
-.dropdown option {
-    padding: 5px;
-    border: none;
 }
 
 /* COLORS */

@@ -79,6 +79,16 @@
     height: auto;
 }
 
+.entry-thumbnail {
+    width: 100%;
+    height: auto;
+    
+    border-radius: 8px 8px 0px 0px;
+    
+    padding: -10;
+    margin-bottom: 8px;
+}
+
 .entry-title {
     font-size: 22px;
     font-weight: 600;
@@ -89,8 +99,8 @@
 .entry-content {
     font-size: 14px;
     font-weight: 300;
-    margin-top: 6px;
-    margin-bottom: 6px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .entry-content li {
@@ -107,8 +117,8 @@
     height: 48px;
     float: left;
     padding-top: 5px;
-    border-radius: 15px;
-    margin-right: 2%;
+    border-radius: 9px;
+    margin-right: 3%;
 }
 
 .ef-name {
