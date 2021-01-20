@@ -7,7 +7,8 @@
 }
 
 .side-news,
-.side-settings {
+.side-settings,
+.side-account {
     list-style-type: none;
     display: flex;
     flex-direction: column;
@@ -27,8 +28,15 @@
     background-color: #202020;
 }
 
-
 #settings-bar {
+    top: 0px;
+    position: absolute;
+    right: -500px;
+    transition: 0.5s right;
+    background-color: #202020;
+}
+
+#account-bar {
     top: 0px;
     position: absolute;
     right: -500px;
@@ -63,6 +71,7 @@
     margin-right: 3px;
     padding: 10px;
     padding-top: 5px;
+    padding-bottom: 5px;
     color: white;
     display: flex;
     flex-direction: column;
@@ -264,6 +273,28 @@ input[type="range"]:focus {
 .save-settings-button:focus {
     outline: none;
     box-shadow: none;
+}
+
+.ac-pfp {
+    width: 48px;
+    height: 48px;
+    float: left;
+    padding-top: 5px;
+    border-radius: 7px;
+    margin-right: 2%;
+}
+
+.ac-name {
+    display: inline-block;
+    margin-top: 4px;
+    margin-left: 5px;
+    color: #ffffff;
+}
+
+.ac-buttons {
+    float: right;
+    display: flex;
+    flex-direction: column;
 }
 
 

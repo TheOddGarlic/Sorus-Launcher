@@ -21,7 +21,7 @@
                 <a class="button-circle gray" onclick="settingsApp()"><object type="image/svg+xml" data="svg/settings.svg"></object></a>
             </li>
             <li>
-                <a class="button-circle gray" onclick="userApp();"><object type="image/svg+xml" data="svg/user.svg"></object></a>
+                <a class="button-circle gray" onclick="accountApp();"><object type="image/svg+xml" data="svg/user.svg"></object></a>
             </li>
             <li>
                 <a class="button-circle gray" onclick="homeApp();"><object type="image/svg+xml" data="svg/home.svg"></object></a>
@@ -85,6 +85,7 @@
                 </div>
             </li>
         </ul>
+        
         <!-- settings -->
         <ul id="settings-bar" class="side-settings">
             <li>
@@ -144,6 +145,26 @@
             </li>
             <li>
                 <input class="button blue" type="button" value="Save Settings" onclick="saveOptions()">
+            </li>
+        </ul>
+        
+        <!-- account -->
+        <ul id="account-bar" class="side-account">
+            <li>
+                <div class="entry-content" style="font-size: 17px">Logged in as <b>TestUser123</b></div>
+            </li>
+            <li>
+                <div class="account">
+                    <img class="ac-pfp" src="https://crafatar.com/avatars/f247be7c5b8241c69148793ded77e71f" alt="">
+                    <a class="ac-name">TestUser123</a>
+                    <div class="ac-buttons">
+                        <input class="button-small blue" type="button" value="Use Account">
+                        <input class="button-small red" type="button" value="Sign Out">
+                    </div>
+                </div>
+            </li>
+            <li>
+                <input class="button blue" type="button" value="Add Account">
             </li>
         </ul>
 
@@ -207,45 +228,11 @@
         </div>
     </div>
 
-    <script>
-        window.onload = function winOnLoad() {
-            const ver_disabler = document.getElementById("ver_disabler");
-            const ver_selector = document.getElementById("ver_selector");
-
-            ver_disabler.style.display = "none";
-            ver_selector.style.display = "none";
-
-            // document.querySelector(".ver_selector a img").style.filter = "grayscale(100%)";
-
-            var opts = document.getElementById("settings-bar");
-            var news = document.getElementById("news-bar");
-
-            opts.style.right = "-500px";
-            news.style.right = "0px";
-        }
-        
-        function settingsApp() {
-            var options = document.getElementById("settings-bar");
-            var news = document.getElementById("news-bar");
-
-            news.style.right = "-500px";
-            options.style.right = "0px";
-        }
-
-        function homeApp() {
-            var options = document.getElementById("settings-bar");
-            var news = document.getElementById("news-bar");
-
-            news.style.right = "0px";
-            options.style.right = "-500px";
-        }
-
-    </script>
-
     <script src="./js/optionsmanager.js"></script>
     <script src="./js/launch.js"></script>
     <script src="./js/accounts.js"></script>
     <script src="./js/archive.js"></script>
+    <script src="js/sidebar.js"></script>
     
 </body>
 </html>
