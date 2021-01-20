@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="node_modules/typeface-raleway/index.css">
 
 </head>
+
 <body>
     <header class="navbar">
         <ul class="nav-ul">
@@ -32,15 +34,20 @@
             </div>
 
             <script>
-                const {ipcRenderer} = require('electron');
+                const {
+                    ipcRenderer
+                } = require('electron');
+
                 function exitApp() {
                     ipcRenderer.send('close-app');
                 }
+
                 function miniApp() {
                     ipcRenderer.send('minimize-app')
                 }
+
                 function userApp() {
-                    if(document.getElementById('user_pop_up').style.display == "block") {
+                    if (document.getElementById('user_pop_up').style.display == "block") {
                         document.getElementById('user_pop_up').style.display = "none";
                         document.getElementById('upu-disabler').style.display = "none";
                     } else {
@@ -48,6 +55,7 @@
                         document.getElementById('upu-disabler').style.display = "block";
                     }
                 }
+
             </script>
         </ul>
     </header>
@@ -68,22 +76,22 @@
                 </div>
             </li>
         </ul>
-        
+
         <!-- settings -->
         <ul id="settings-bar" class="side-settings">
             <li>
-               <div class="entry-title">Client Settings</div>
-               <div class="entry-content">
+                <div class="entry-title">Client Settings</div>
+                <div class="entry-content">
                     <ul class="client-settings">
                         <li>
-                            <label id="minramusageslider" for="minramusageslider">Min Ram Usage: </label> 
+                            <label id="minramusageslider" for="minramusageslider">Min Ram Usage: </label>
                             <input type="range" name="minramusageslider" min="512" max="2048" step="32" id="min_ram_slider">
                         </li>
                         <li>
-                           <label id="maxramusageslider" for="maxramusageslider">Max Ram Usage: </label> 
-                           <input type="range" name="maxramusageslider" min="512" max="2048" step="32" id="max_ram_slider">
+                            <label id="maxramusageslider" for="maxramusageslider">Max Ram Usage: </label>
+                            <input type="range" name="maxramusageslider" min="512" max="2048" step="32" id="max_ram_slider">
 
-                           <!-- <div class="inputwrap">
+                            <!-- <div class="inputwrap">
                             <input type="range" class="range" min="0" max="100" step="0.1" value="0" id="max_ram_slider" name="maxramusageslider">
                             <div class="track">
                               <div class="track-inner"></div>
@@ -91,17 +99,17 @@
                             <div class="thumb"></div>
                           </div> -->
                         </li>
-                        
+
                         <li>
                             <label id="fullscreenoutput">
                                 Fullscreen
                                 <input type="checkbox" id="fullscreen_chkbox">
                                 <!-- <span class="checkmark"></span> -->
-                                
+
                             </label>
                         </li>
                     </ul>
-               </div>
+                </div>
             </li>
             <li>
                 <div class="entry-title">Launcher Settings</div>
@@ -110,17 +118,18 @@
                         <li>
                             <form action="">
                                 <label for="launcher_visibility">Launcher visibility on launch: </label>
-                                <select name="launcher_visibility" id="launcher_visibility">
+                                <select class="dropdown blue" name="launcher_visibility" id="launcher_visibility">
                                     <option value="Keep">Keep</option>
                                     <option value="Hide">Hide</option>
                                     <option value="Close">Close</option>
                                 </select>
-                              </form>
+                            </form>
                         </li>
                         <li>
                             <div id="version-option-thing">Launcher Version: </div>
                             <script>
                                 document.getElementById('version-option-thing').innerHTML = "Launcher Version: 0.2.0";
+
                             </script>
                         </li>
                     </ul>
@@ -130,7 +139,7 @@
                 <input class="button blue" type="button" value="Save Settings" onclick="saveOptions()">
             </li>
         </ul>
-        
+
         <!-- account -->
         <ul id="account-bar" class="side-account">
             <li>
@@ -170,8 +179,8 @@
                 const ver_disabler = document.getElementById("ver_disabler");
                 const ver_selector = document.getElementById("ver_selector");
                 var playbtn_status = document.getElementById("playbtn-status");
-                
-                if(ver_selector.style.display == "none") {
+
+                if (ver_selector.style.display == "none") {
                     ver_selector.style.display = "flex";
                     ver_disabler.style.display = "block";
                 } else {
@@ -182,6 +191,7 @@
                 }
 
             }
+
         </script>
 
     </div>
@@ -196,14 +206,14 @@
                         <input type="radio" name="version" id="ver_1" value="1.7.10">
                         <label for="ver_1">
                             <img id="ver_1" src="media/bg1.png" alt="">
-                            <div class="ver_name">1.7</div>
+                            <div class="ver_name">1.7.10</div>
                         </label>
                     </li>
                     <li>
                         <input type="radio" name="version" id="ver_2" value="1.8.9">
                         <label for="ver_2">
                             <img id="ver_2" src="media/bg1.png" alt="">
-                            <div class="ver_name">1.8</div>
+                            <div class="ver_name">1.8.9</div>
                         </label>
                     </li>
                 </ul>
@@ -216,6 +226,8 @@
     <script src="./js/accounts.js"></script>
     <script src="./js/archive.js"></script>
     <script src="js/sidebar.js"></script>
-    
+    <script src="js/controls.js"></script>
+
 </body>
+
 </html>

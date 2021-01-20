@@ -1,14 +1,15 @@
 :root {
     --blue-color: #0075b2;
     --blue-hover-color: #005d8e;
-    
-    --gray-color: var(--back-bg); 
+
+    --gray-color: var(--back-bg);
     --gray-hover-color: #404040;
-    
-    --red-color: #b20303; 
+
+    --red-color: #b20303;
     --red-hover-color: #930000;
 }
 
+/* BUTTONS */
 .button {
     color: white;
     background-color: var(--blue-color);
@@ -25,9 +26,11 @@
     cursor: pointer;
     transition: 250ms;
 }
+
 .button:hover {
     background-color: var(--blue-hover-color);
 }
+
 .button:focus {
     outline: none;
     box-shadow: none;
@@ -49,9 +52,11 @@
     cursor: pointer;
     transition: 250ms;
 }
+
 .button-small:hover {
     background-color: var(--blue-hover-color);
 }
+
 .button-small:focus {
     outline: none;
     box-shadow: none;
@@ -67,18 +72,49 @@
     align-items: center;
     transition: 0.3s all;
 }
+
 .button-circle:hover {
     background-color: var(--blue-hover-color);
 }
+
 .button-circle:focus {
-    
+    outline: none;
+    box-shadow: none;
 }
 
+/* SELECT DROPDOWN */
+.dropdown {
+    width: 100%;
+    
+    color: #ffffff;
+    background-color: var(--blue-color);
+    
+    border: none;
+    border-radius: 2px;
+    
+    font-size: 15px;
+    
+    padding: 5px;
+    margin-top: 8px;
+}
+
+.dropdown:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.dropdown option {
+    padding: 5px;
+    border: none;
+}
+
+/* COLORS */
 .blue {
     color: white;
     background-color: var(--blue-color);
 }
-.blue:hover {
+
+.red:hover {
     background-color: var(--blue-hover-color);
 }
 
@@ -86,6 +122,7 @@
     color: white;
     background-color: var(--gray-color);
 }
+
 .gray:hover {
     background-color: var(--gray-hover-color);
 }
@@ -94,6 +131,7 @@
     color: white;
     background-color: var(--red-color);
 }
+
 .red:hover {
     background-color: var(--red-hover-color);
 }
