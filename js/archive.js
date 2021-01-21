@@ -5,6 +5,7 @@ function extractJarFiles(name) {
     try {
       await extract(app.getPath("userData") + "/mc/Sorus/client/" + name + ".jar", { dir: app.getPath("userData") + "/mc/Sorus/client/temp" })
       console.log(name + ' extraction complete')
+      fs.writeFileSync(app.getPath("userData") + "/mc/Sorus/updates.json", "{}");
       resolve();
     } catch (err) {
       console.error(err)
