@@ -1,59 +1,59 @@
 {
-		"name": "soruslauncher",
-		"version": "0.2.0",
-		"description": "Launcher for Sorus",
-		"main": "main.js",
-		"scripts": {
-				"start": "electron .",
-				"pack": "electron-builder --dir",
-				"dist": "electron-builder"
+	"name": "soruslauncher",
+	"version": "0.2.0",
+	"description": "Launcher for Sorus",
+	"main": "main.js",
+	"scripts": {
+		"start": "electron .",
+		"pack": "electron-builder --dir",
+		"dist": "electron-builder"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/SorusClient/Sorus-Launcher.git"
+	},
+	"author": "Hot Tutorials and any contributors",
+	"license": "MIT",
+	"dependencies": {
+		"electron-updater": "^4.3.5",
+		"extract-zip": "^2.0.1",
+		"minecraft-launcher-core": "^3.16.1",
+		"typeface-raleway": "^1.1.13",
+		"zip-a-folder": "0.0.12"
+	},
+	"devDependencies": {
+		"electron-builder": "^22.9.1",
+		"electron": "^11.2.0"
+	},
+	"build": {
+		"appId": "ml.sorus.launcher",
+		"mac": {
+			"category": "ml.sorus.launcher"
 		},
-		"repository": {
-				"type": "git",
-				"url": "https://github.com/SorusClient/Sorus-Launcher.git"
+		"publish": [
+			{
+				"provider": "github",
+				"owner": "SorusClient",
+				"repo": "Sorus-Launcher"
+			}
+		],
+		"win": {
+			"publish": "github"
 		},
-		"author": "Hot Tutorials and any contributors",
-		"license": "MIT",
-		"dependencies": {
-				"electron-updater": "^4.3.5",
-				"extract-zip": "^2.0.1",
-				"minecraft-launcher-core": "^3.16.1",
-				"typeface-raleway": "^1.1.13",
-				"zip-a-folder": "0.0.12"
+		"productName": "Sorus Launcher",
+		"target": "NSIS",
+		"directories": {
+			"output": "build"
 		},
-		"devDependencies": {
-				"electron-builder": "^22.9.1",
-				"electron": "^11.2.0"
+		"nsis": {
+			"allowToChangeInstallationDirectory": true,
+			"oneClick": false
 		},
-		"build": {
-				"appId": "ml.sorus.launcher",
-				"mac": {
-						"category": "ml.sorus.launcher"
-				},
-				"publish": [
-						{
-								"provider": "github",
-								"owner": "SorusClient",
-								"repo": "Sorus-Launcher"
-						}
-				],
-				"win": {
-						"publish": "github"
-				},
-				"productName": "Sorus Launcher",
-				"target": "NSIS",
-				"directories": {
-						"output": "build"
-				},
-				"nsis": {
-						"allowToChangeInstallationDirectory": true,
-						"oneClick": false
-				},
-				"files": [
-						"!settings.json",
-						"!details.json",
-						"!.gitignore",
-						"!mc/"
-				]
-		}
+		"files": [
+			"!settings.json",
+			"!details.json",
+			"!.gitignore",
+			"!mc/"
+		]
+	}
 }

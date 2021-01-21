@@ -27,13 +27,11 @@ function createMainWindow() {
     console.log("resized and centered")
     win.setSize(1200,800)
     win.center();
-    
   })
 
   ipcMain.on('close-app', (event, arg) => {
     console.log("exit")
     app.exit();
-    
   })
 
   ipcMain.on('minimize-app', (event, arg) => {
@@ -65,7 +63,6 @@ function createMainWindow() {
     win.resizable = false
     win.setFullScreenable = false
   })
-  
 
   autoUpdater.checkForUpdatesAndNotify();
 
@@ -85,11 +82,7 @@ function createMainWindow() {
   autoUpdater.on('update-not-available', (e) => {
       console.log("No updates found")
   })
-
 }
-
-
-
 
 app.whenReady().then(createMainWindow)
 
@@ -106,5 +99,3 @@ app.on('activate', () => {
     createWindow()
   }
 })
-
-
