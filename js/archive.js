@@ -1,12 +1,17 @@
 const extract = require('extract-zip')
  
-async function extractJarFiles(name) {
-  	try {
-		await extract(app.getPath("userData") + "/mc/Sorus/client/" + name + ".jar", { dir: app.getPath("userData") + "/mc/Sorus/client/temp" })
-		console.log(name + ' extraction complete')
-  	} catch (err) {
-		console.error(err)
-  	}
+function extractJarFiles(name) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      await extract(app.getPath("userData") + "/mc/Sorus/client/" + name + ".jar", { dir: app.getPath("userData") + "/mc/Sorus/client/temp" })
+      console.log(name + ' extraction complete')
+      fs.writeFileSync(app.getPath("userData") + "/mc/Sorus/updates.json", "{}");
+      resolve();
+    } catch (err) {
+      console.error(err)
+      reject();
+    }
+  });
 }
 
 // async function archiveDir(name) {
