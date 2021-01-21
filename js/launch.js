@@ -39,7 +39,7 @@ function downloadSorus(url, name) {
     var responseSent = false;
     http.get(url, response => {
       response.pipe(file);
-      file.on('finish', () =>{
+      file.on('finish', () =>{ // test
         file.close(() => {
           if(responseSent)  return;
           responseSent = true;
