@@ -39,7 +39,7 @@ function downloadSorus(url, name) {
     var responseSent = false;
     http.get(url, response => {
       response.pipe(file);
-      file.on('finish', () =>{ // gaiwjgiaigj ajiwjig
+      file.on('finish', () =>{
         file.close(() => {
           if(responseSent)  return;
           responseSent = true;
@@ -91,7 +91,12 @@ function checkAndDownloadSorus() {
 
   return new Promise((resolve, reject) => {
     let counter = 0;
-    if (!fs.existsSync(app.getPath('userData') + '/mc/Sorus/updates.json') /* or it is not up to date */) {
+    if (!fs.existsSync(app.getPath('userData') + '/mc/Sorus/client/Core.jar') || 
+        !fs.existsSync(app.getPath('userData') + '/mc/Sorus/client/' + options.mc_ver + '.jar') || 
+        !fs.existsSync(app.getPath('userData') + '/mc/Sorus/client/JavaAgent.jar') ||
+        checkUpdate("https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/Core.jar", "Core") ||
+        checkUpdate("https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/versions/" + options.mc_ver + ".jar", options.mc_ver) ||
+        checkUpdate("https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/environments/JavaAgent.jar", "JavaAgent")) {
       try {
         playbtn_status.innerHTML = "Downloading Core.jar"
         downloadSorus("https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/Core.jar", "Core").then((dest) => {

@@ -14,9 +14,9 @@ function getFileSizeInBytes(filename) {
   return fileSizeInBytes;
 }
 
-function checkUpdate(url, file) {
+function checkUpdate(url, jar) {
   var remoteBytes = getRemoteFileSizeInBytes(url);
-  var localBytes = getFileSizeInBytes(file);
+  var localBytes = getFileSizeInBytes(app.getPath('userData') + '/mc/Sorus/client/' + jar + '.jar');
 
   return remoteBytes == localBytes ? false : true;
 }
