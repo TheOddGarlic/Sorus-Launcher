@@ -189,7 +189,7 @@
             try {
                 status.innerHTML = "CHECKING FOR ACCESSTOKEN"
                 status.style.color = "#fff";
-                if(fs.existsSync(app.getPath("userData") + "details.json")) {
+                if(fs.existsSync(app.getPath("userData") + "/details.json")) {
                     status.style.color = "#2F8A03";
                     status.innerHTML = "ACCESSTOKEN FOUND - VALIDATING"
                     validate();

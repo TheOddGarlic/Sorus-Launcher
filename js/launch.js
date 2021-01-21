@@ -7,16 +7,11 @@ function changePlayButtonStatus(string) {
     playbtn_status.innerText = string;
 }
 
-const { remote } = require("electron");
-const app = remote.app;
-
-var fs = require("fs");
-
 var options = JSON.parse(fs.readFileSync(app.getPath("userData") + "/settings.json"));
 
 function downloadSorus(jarFileName, name, process) {
     var https = require('https');
-    try {     
+    try {
         var dest = app.getPath("userData") + "/mc/Sorus/client/"
         let url = jarFileName;
         console.log(url)
@@ -24,9 +19,10 @@ function downloadSorus(jarFileName, name, process) {
         var request = https.get(url, function(response) {
             response.pipe(file);
             file.on('finish', function() {
-                extractJarFiles(name);
                 file.close(console.log(name + ".jar finished downloading"));
                 playbtn_status.innerHTML = "Extracting " + name + ".jar " + process
+                extractJarFiles(name);
+                console.log("Extracted " + name)
                 
             });
         }).on('error', function(err) {
@@ -37,37 +33,38 @@ function downloadSorus(jarFileName, name, process) {
     }
     
 }
-async function checkAndDownloadSorus() {
+function checkAndDownloadSorus() {
     if(!fs.existsSync(app.getPath("userData") + "/mc/Sorus/client/Core.jar")) {
         try {
             playbtn_status.innerHTML = "Downloading Core.jar 1/3"
-            await downloadSorus("https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/Core.jar", "Core", "1/3");
-            console.log("Downloaded Core.jar")
+            downloadSorus("https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/Core.jar", "Core", "1/3");
+            console.log("Downloaded Core.jar");
         } catch (error) {
-            console.error(error)
+            console.error(error);
         }
     }
     if(!fs.existsSync(app.getPath("userData") + "/mc/Sorus/client/" + options.mc_ver + ".jar")) {
         try {
             playbtn_status.innerHTML = "Downloading Sorus " + options.mc_ver + " 2/3"
-            await downloadSorus("https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/versions/" + options.mc_ver + ".jar", options.mc_ver, "2/3");
+            downloadSorus("https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/versions/" + options.mc_ver + ".jar", options.mc_ver, "2/3");
             console.log("Downloaded " + options.mc_ver + ".jar")
         } catch (error) {
-            console.error(error)
+            console.error(error);
         }
     }
     if(!fs.existsSync(app.getPath("userData") + "/mc/Sorus/client/JavaAgent.jar")) {
         try {
             playbtn_status.innerHTML = "Downloading JavaAgent.jar 3/3"
-            await downloadSorus("https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/environments/JavaAgent.jar", "JavaAgent", "3/3");
-            console.log("Downloaded JavaAgent.jar") 
+            downloadSorus("https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/environments/JavaAgent.jar", "JavaAgent", "3/3");
+            console.log("Downloaded JavaAgent.jar");
         } catch (error) {
-            console.error(error)
+            console.error(error);
         }
     }
+    return;
 }
 
-async function launchMinecraft() {
+function launchMinecraft() {
     const { Client, Authenticator } = require('minecraft-launcher-core');
     const launcher = new Client();
 
@@ -92,7 +89,7 @@ async function launchMinecraft() {
         fs.mkdirSync(app.getPath("userData") + "/mc/Sorus/client/", {recursive: true}, err => console.error(err));
     }
     playbtn_status.innerHTML = "Checking for Sorus Installation"
-    await checkAndDownloadSorus();
+    checkAndDownloadSorus();
 
     let opts = {
         clientPackage: null,

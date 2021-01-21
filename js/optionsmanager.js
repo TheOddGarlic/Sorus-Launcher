@@ -70,9 +70,9 @@ function saveOptions() {
 
 const os = require("os");
 
-total_mem_mb = (os.totalmem() / 1024) / 1024;
+var total_mem_mb = (os.totalmem() / 1024) / 1024;
 
-window.onload = function() {
+window.addEventListener("load", function() {
 	const fs = require('fs');
 	const { remote } = require('electron');
 	const app = remote.app;
@@ -108,9 +108,6 @@ window.onload = function() {
 
 			var details = JSON.parse(fs.readFileSync(app.getPath("userData") + "/details.json"));
 
-			upu_pfp.src = "https://crafatar.com/avatars/" + details.uuid;
-			upu_title.innerHTML = "Logged in as <b>" + details.username + "<b>"
-
 		} else {
 			console.log('The settings does not exist.');
 			minoutput.innerHTML = "Min RAM Usage: 1024 MB";
@@ -121,7 +118,7 @@ window.onload = function() {
 			maxslider.max = total_mem_mb;
 			maxslider.value = 2048;
 
-			setSelectedVersion("1");
+			setSelectedVersion("1.8.9");
 
 			launcher_visibility.value = "Hide";
 
@@ -133,8 +130,6 @@ window.onload = function() {
 					fullscreen: false,
 				},
 				launcher_settings: {
-					// autoupdate_client: autoupdateclient.value,
-					// autoupdate_launcher: autoupdatelauncher.value,
 					launcher_visibility_on_launch: "Close"
 				}
 			}
@@ -151,7 +146,7 @@ window.onload = function() {
 	} catch (err) {
 		console.error(err);
 	}
-}
+})
 
 maxslider.oninput = function() {
 	maxoutput.innerText = "Max RAM Usage: " + maxslider.value + " MB";
