@@ -109,3 +109,6 @@
     filter: grayscale(0%) blur(1px);
 }
 
+.ver_selector input:checked + label div::before {
+  content: '• ';
+}
