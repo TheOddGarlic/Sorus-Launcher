@@ -1,7 +1,7 @@
 var news_bar = document.getElementById("news-bar");
 
 window.addEventListener("load", function() {
-    fetch('https://raw.githubusercontent.com/SorusClient/Sorus-Launcher/master/resources/news.json')
+    fetch('https://raw.githubusercontent.com/SorusClient/Sorus-Launcher/resources/json/news.json')
         .then(res => res.json())
         .then((out) => {
             console.log(out)
