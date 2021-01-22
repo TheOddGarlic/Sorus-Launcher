@@ -98,6 +98,7 @@
     margin-top: 8px;
     
     cursor: pointer;
+    transition: 250ms;
 }
 
 .dropdown:focus {
@@ -111,7 +112,7 @@
     background-color: var(--blue-color);
 }
 
-.red:hover {
+.blue:hover {
     background-color: var(--blue-hover-color);
 }
 

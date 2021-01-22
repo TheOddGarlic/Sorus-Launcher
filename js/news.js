@@ -49,7 +49,7 @@ window.addEventListener("load", function() {
                 'Posted By ',
                 h('b', null, author)
               ),
-              h('div', { className: 'el-date' }, date)
+              h('div', { className: 'ef-date' }, date)
             )
           )
         );
