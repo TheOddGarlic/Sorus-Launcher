@@ -61,6 +61,9 @@
         </ul>
     </header>
 
+    <img src="./media/bg.png" style="position: absolute; left: 2%; width: 800px; top: 15%; filter: blur(1px); border-radius: 10px;" id="launcher-background">
+
+
     <div class="sidebar">
         <ul id="news-bar" class="side-news">
             
@@ -240,6 +243,20 @@
 
 
     <script>
+        window.onload = function() {
+            var background = document.getElementById("launcher-background");
+
+            let backgrounds = [
+                "./media/bg.png",
+                "./media/bg1.png",
+                "./media/bg2.png"
+            ]
+
+            var randomBG = Math.floor(Math.random() * backgrounds.length);
+
+            background.src = backgrounds[randomBG];
+        }
+
         setTimeout(function() {
             var body_ID = document.getElementsByTagName("body")[0];
             var script_element = document.createElement('script');

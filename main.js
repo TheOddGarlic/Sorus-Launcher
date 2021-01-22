@@ -1,6 +1,7 @@
 const { autoUpdater } = require('electron-updater');
 const { app, BrowserWindow } = require('electron');
 
+
 function createMainWindow() {
   const win = new BrowserWindow({
     width: 350,
@@ -93,9 +94,23 @@ app.on('window-all-closed', () => {
 })
 
 app.on('activate', () => {
-  // On macOS it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow()
   }
 })
+
+// const client = require('discord-rich-presence')('777578659216097312'); // idc
+
+// var fs = require("fs")
+// var detail = JSON.parse(fs.readFileSync(app.getPath("userData") + "/details.json"))
+
+
+// client.updatePresence({
+//   details: "Using Sorus Launcher",
+//   state: "IGN: " + detail.username,
+//   largeImageKey: 'sorus_dark',
+//   largeImageText: "Sorus Client Launcher",
+//   smallImageKey: 'sorus_dark',
+//   smallImageText: "Version 0.3",
+//   instance: true,
+// });
