@@ -28,3 +28,5 @@ document.getElementById("ac-pfp").src = "https://crafatar.com/avatars/" + detail
 ac_loggedinas.innerHTML = "Logged in as <b>" + details.username + "<b>"
 
 // active account color #00ff0052
+
+// E Time to make accounts work
