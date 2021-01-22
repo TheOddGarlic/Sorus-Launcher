@@ -8,31 +8,36 @@
 
 .side-news,
 .side-settings,
+.side-accessibility,
 .side-account {
-    list-style-type: none;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    padding: 0;
-    margin: 0;
-    overflow-y: scroll;
-    transition: 0.2s right;
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  overflow-y: scroll;
+}
+
+:root:not(.reducedmotion) .side-news,
+:root:not(.reducedmotion) .side-settings,
+:root:not(.reducedmotion) .side-accessibility,
+:root:not(.reducedmotion) .side-account {
+  transition: 0.2s right;
 }
 
 #news-bar {
     right: 0px;
-    transition: 0.5s right;
     position: relative;
     top: 0px;
     background-color: #202020;
 }
 
-#settings-bar {
+#settings-bar, #accessibility-bar {
     top: 0px;
     position: absolute;
     right: -500px;
-    transition: 0.5s right;
     background-color: #202020;
 }
 
@@ -40,8 +45,14 @@
     top: 0px;
     position: absolute;
     right: -500px;
-    transition: 0.5s right;
     background-color: #202020;
+}
+
+:root:not(.reducedmotion) #news-bar,
+:root:not(.reducedmotion) #settings-bar,
+:root:not(.reducedmotion) #accessibility-bar,
+:root:not(.reducedmotion) #account-bar {
+  transition: 0.5s right;
 }
 
 .sidebar ul::-webkit-scrollbar {
@@ -55,7 +66,10 @@
 .sidebar ul::-webkit-scrollbar-thumb {
     background: var(--fore-bg);
     border-radius: 10px;
-    transition: 0.3s;
+}
+
+:root:not(.reducedmotion) .sidebar ul::-webkit-scrollbar-thumb {
+  transition: 0.3s;
 }
 
 .sidebar ul::-webkit-scrollbar-thumb:hover {
@@ -146,11 +160,25 @@
     padding: 0;
     margin: 0;
     overflow-y: scroll;
-    transition: 0.2s right;
+}
+
+.accessibility-settings {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  overflow-y: scroll;
+}
+
+.accessibility-settings li {
+  background-color: rgba(0, 0, 0, 0);
 }
 
 .client-settings li {
-    background-color: rgba(0, 0, 0, 0);
+  background-color: rgba(0, 0, 0, 0);
 }
 
 input[type="range"] {
@@ -193,12 +221,17 @@ input[type="range"]:focus {
     padding: 0;
     margin: 0;
     overflow-y: scroll;
-    transition: 0.2s right;
     background-color: var(--back-bg);
 }
 
 .launcher-settings li {
     background-color: rgba(0, 0, 0, 0);
+}
+
+:root:not(.reducedmotion) .accessibility-settings,
+:root:not(.reducedmotion) .launcher-settings,
+:root:not(.reducedmotion) .client-settings {
+  transition: 0.2s right;
 }
 
 .set-checkbox-cont {

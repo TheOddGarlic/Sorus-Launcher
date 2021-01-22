@@ -105,10 +105,12 @@
                             </form>
                         </li>
                         <li>
+                          <input class="button" type="button" value="Accessibility Settings →" onclick="accessibilityApp()">
+                        </li>
+                        <li>
                             <div id="version-option-thing">Launcher Version: </div>
                             <script>
                                 document.getElementById('version-option-thing').innerHTML = "Launcher Version: 0.3.0";
-
                             </script>
                         </li>
                     </ul>
@@ -118,6 +120,32 @@
                 <input class="button blue" type="button" value="Save Settings" onclick="saveOptions()">
             </li>
         </ul>
+
+        <!-- accessibility options -->
+        <ul id="accessibility-bar" class="side-accessibility">
+          <li>
+              <div class="entry-title">Accessibility Settings</div>
+              <div class="entry-content">
+                  <ul class="accessibility-settings">
+                      <li>
+                          <label id="reducedmotion">
+                            Reduced Motion
+                            <input type="checkbox" id="reduced_motion_chkbox"><br>
+                            Reduces animations, hover effects, and other moving effects.
+                          </label><br>
+                          <label id="colorblindmode">
+                            Colorblind Mode
+                            <input type="checkbox" id="colorblind_mode_chkbox"><br>
+                            Makes the version switcher colorblind-friendly by adding a dot next to the selected version.
+                          </label>
+                      </li>
+                  </ul>
+              </div>
+          </li>
+          <li>
+              <input class="button blue" type="button" value="Save Settings" onclick="saveOptions()">
+          </li>
+      </ul>
 
         <!-- account -->
         <ul id="account-bar" class="side-account">
