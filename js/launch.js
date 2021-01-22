@@ -9,10 +9,10 @@ function changePlayButtonStatus(string) {
     playbtn_status.innerText = string;
 }
 
-var options = JSON.parse(fs.readFileSync(app.getPath("userData") + "/settings.json"));
+var options = JSON.parse(fs.readFileSync(userDataPath + "/settings.json"));
 
 function downloadSorus(url, name) {
-  var dest = app.getPath("userData") + "/mc/Sorus/client/" + name + '.jar';
+  var dest = userDataPath + "/mc/Sorus/client/" + name + '.jar';
   var file = fs.createWriteStream(dest);
   return new Promise((resolve, reject) => {
     var responseSent = false;
@@ -39,7 +39,7 @@ async function archiveDir(name) {
   
   changePlayButtonStatus("Combining JARS")
 
-	var output = fs.createWriteStream(app.getPath("userData") + "/mc/Sorus/client/" + name + "_compiled.jar");
+	var output = fs.createWriteStream(userDataPath + "/mc/Sorus/client/" + name + "_compiled.jar");
 	var archive = archiver('zip');
 
 	output.on('close', function () {
@@ -53,11 +53,11 @@ async function archiveDir(name) {
 
 	await archive.pipe(output);
 
-	await archive.directory(app.getPath("userData") + '/mc/Sorus/client/temp', false);
+	await archive.directory(userDataPath + '/mc/Sorus/client/temp', false);
 
   changePlayButtonStatus("Finished combining JARS")
 	await archive.finalize();
-	fs.rmdirSync(app.getPath("userData") + "/mc/Sorus/client/temp", { recursive: true });
+	fs.rmdirSync(userDataPath + "/mc/Sorus/client/temp", { recursive: true });
 }
 
 async function archiveAll() {
@@ -73,9 +73,9 @@ async function extractAll() {
 function checkAndDownloadSorus() {
 return new Promise((resolve, reject) => {
     let counter = 0;
-    if (!fs.existsSync(app.getPath('userData') + '/mc/Sorus/client/Core.jar') || 
-        !fs.existsSync(app.getPath('userData') + '/mc/Sorus/client/' + options.mc_ver + '.jar') || 
-        !fs.existsSync(app.getPath('userData') + '/mc/Sorus/client/JavaAgent.jar') ||
+    if (!fs.existsSync(userDataPath + '/mc/Sorus/client/Core.jar') || 
+        !fs.existsSync(userDataPath + '/mc/Sorus/client/' + options.mc_ver + '.jar') || 
+        !fs.existsSync(userDataPath + '/mc/Sorus/client/JavaAgent.jar') ||
         checkUpdate("https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/Core.jar", "Core") ||
         checkUpdate("https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/versions/" + options.mc_ver + ".jar", options.mc_ver) ||
         checkUpdate("https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/environments/JavaAgent.jar", "JavaAgent")) {
@@ -118,7 +118,7 @@ async function launchMinecraft() {
     var max_ram_usage = options.client_settings.max_ram;
     var min_ram_usage = options.client_settings.min_ram;
 
-    var details = JSON.parse(fs.readFileSync(app.getPath("userData") + "/details.json"));
+    var details = JSON.parse(fs.readFileSync(userDataPath + "/details.json"));
     let user = {
        access_token: details.accessToken,
        client_token: details.clientToken,
@@ -128,14 +128,14 @@ async function launchMinecraft() {
        user_properties: details.user_properties 
     }
 
-    if(!fs.existsSync(app.getPath("userData") + "/mc/Sorus/client/")) {
-        fs.mkdirSync(app.getPath("userData") + "/mc/Sorus/client/", {recursive: true}, err => console.error(err));
+    if(!fs.existsSync(userDataPath + "/mc/Sorus/client/")) {
+        fs.mkdirSync(userDataPath + "/mc/Sorus/client/", {recursive: true}, err => console.error(err));
     }
 
     let opts = {
         clientPackage: null,
         authorization: user,
-        root: app.getPath("userData") + "/mc/",
+        root: userDataPath + "/mc/",
         version: {
             number: options.mc_ver,
             type: "release",
@@ -149,7 +149,7 @@ async function launchMinecraft() {
             width: 900,
             height: 500
         },
-        customArgs: `-javaagent:`+ app.getPath("userData") +`/mc/Sorus/client/` + options.mc_ver + `_compiled.jar=version=` + options.mc_ver
+        customArgs: `-javaagent:`+ userDataPath +`/mc/Sorus/client/` + options.mc_ver + `_compiled.jar=version=` + options.mc_ver
     }
 
     playbtn_status.innerHTML = "Checking for Sorus Installation"
@@ -191,7 +191,7 @@ async function launchMinecraft() {
 }
 
 function launcher_visibility_controller() {
-    let data = JSON.parse(fs.readFileSync(app.getPath("userData") + '/settings.json'));
+    let data = JSON.parse(fs.readFileSync(userDataPath + '/settings.json'));
 
     if(data.launcher_settings.launcher_visibility_on_launch == "Close") {
         ipcRenderer.send("hide-app");

@@ -84,8 +84,6 @@
     </div>
 
     <script>
-        var {remote} = require('electron');
-        var app = remote.app;
         let status = document.getElementById('statusline1');
         let status2 = document.getElementById('statusline2');
 
@@ -103,7 +101,7 @@
                 console.log("Finished Download")
                 status2.innerHTML = "RESTARTING APPLICATION";
                 status.innerHTML = "UPDATE DOWNLOADED"
-                remote.getGlobal("setTimeout")(function() {
+                setTimeout(function() {
                     ipcRenderer.send("quitAndInstall");
                 })
             })

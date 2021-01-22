@@ -43,10 +43,6 @@ function setSelectedVersion(ver) {
 }
 
 function saveOptions() {
-
-	const { remote } = require('electron');
-	const app = remote.app;
-
 	let settings = {
 		mc_ver: getSelectedVersion(),
 		client_settings: {
@@ -61,7 +57,7 @@ function saveOptions() {
 
 	let fs = require('fs');
 	let jsonData = JSON.stringify(settings, null, 4);
-	fs.writeFileSync(app.getPath("userData") + "/settings.json", jsonData, function(err) {
+	fs.writeFileSync(userDataPath + "/settings.json", jsonData, function(err) {
 		if(err) {
 			console.log(err);
 		}
@@ -74,11 +70,9 @@ var total_mem_mb = (os.totalmem() / 1024) / 1024;
 
 window.addEventListener("load", function() {
 	const fs = require('fs');
-	const { remote } = require('electron');
-	const app = remote.app;
 	try {
-		if(fs.existsSync(app.getPath("userData") + '/settings.json')) {
-			let data = JSON.parse(fs.readFileSync(app.getPath("userData") + '/settings.json'));
+		if(fs.existsSync(userDataPath + '/settings.json')) {
+			let data = JSON.parse(fs.readFileSync(userDataPath + '/settings.json'));
 
 			min = data.client_settings.min_ram;
 			max = data.client_settings.max_ram;
@@ -106,7 +100,7 @@ window.addEventListener("load", function() {
 			var launcher_visibility_on_launch = data.launcher_settings.launcher_visibility_on_launch;
 			launcher_visibility.value = launcher_visibility_on_launch;
 
-			var details = JSON.parse(fs.readFileSync(app.getPath("userData") + "/details.json"));
+			var details = JSON.parse(fs.readFileSync(userDataPath + "/details.json"));
 
 		} else {
 			console.log('The settings does not exist.');
@@ -136,7 +130,7 @@ window.addEventListener("load", function() {
 		
 			let fs = require('fs');
 			let jsonData = JSON.stringify(settings, null, 4);
-			fs.writeFileSync(app.getPath("userData") + "/settings.json", jsonData, function(err) {
+			fs.writeFileSync(userDataPath + "/settings.json", jsonData, function(err) {
 				if(err) {
 					console.log(err);
 				}
