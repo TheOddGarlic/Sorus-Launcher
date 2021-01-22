@@ -1,5 +1,3 @@
-const { ElectronHttpExecutor } = require("electron-updater/out/electronHttpExecutor");
-
 function getRemoteFileSizeInBytes(url) {
   var fileSizeInBytes = 0;
   http.request(url, { method: 'HEAD' }, res => {
@@ -16,7 +14,7 @@ function getFileSizeInBytes(filename) {
 
 function checkUpdate(url, jar) {
   var remoteBytes = getRemoteFileSizeInBytes(url);
-  var localBytes = getFileSizeInBytes(app.getPath('userData') + '/mc/Sorus/client/' + jar + '.jar');
+  var localBytes = getFileSizeInBytes(userDataPath + '/mc/Sorus/client/' + jar + '.jar');
 
   return remoteBytes == localBytes ? false : true;
 }

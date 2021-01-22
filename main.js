@@ -1,6 +1,5 @@
-const { app, BrowserWindow } = require('electron');
 const { autoUpdater } = require('electron-updater');
-const path = require('path');
+const { app, BrowserWindow } = require('electron');
 
 function createMainWindow() {
   const win = new BrowserWindow({
@@ -18,45 +17,46 @@ function createMainWindow() {
   win.setFullScreenable = false
 
   const {ipcMain} = require('electron');
+  const userData = app.getPath('userData');
 
-  ipcMain.on('test', (event, arg) => {
-    console.log('test')
+  ipcMain.on('get-userdata-path', event => {
+    event.returnValue = userData;
   })
 
-  ipcMain.on('resize-me-please', (event, arg) => {
+  ipcMain.on('resize-me-please', () => {
     console.log("resized and centered")
     win.setSize(1200,800)
     win.center();
   })
 
-  ipcMain.on('close-app', (event, arg) => {
+  ipcMain.on('close-app', () => {
     console.log("exit")
     app.exit();
   })
 
-  ipcMain.on('minimize-app', (event, arg) => {
+  ipcMain.on('minimize-app', () => {
     win.minimize();
     console.log("minimized")
   })
 
-  ipcMain.on('hide-app', (event, arg) => {
+  ipcMain.on('hide-app', () => {
     win.hide();
     console.log("hidden")
   })
 
-  ipcMain.on('show-app', (event, arg) => {
+  ipcMain.on('show-app', () => {
     win.show();
     console.log("shown")
   })
 
-  ipcMain.on('auth-success', (event, args) => {
+  ipcMain.on('auth-success', () => {
     console.log("auth-success")
     win.loadFile('index.html')
     win.resizable = false
     win.setFullScreenable = false
   })
 
-  ipcMain.on('showLogin', (event, args) => {
+  ipcMain.on('showLogin', () => {
     win.loadFile('loading.html')
     win.setSize(500, 500);
     win.center();
@@ -66,11 +66,11 @@ function createMainWindow() {
 
   autoUpdater.checkForUpdatesAndNotify();
 
-  autoUpdater.on('checking-for-update', (e) => {
+  autoUpdater.on('checking-for-update', () => {
       console.log('Checking for updates')
   })
   
-  autoUpdater.on('update-available', (e) => {
+  autoUpdater.on('update-available', () => {
       console.log("Update is available")
       console.log("updateLauncher")
       win.loadFile("updater.html")
@@ -79,7 +79,7 @@ function createMainWindow() {
       win.center();
   })
 
-  autoUpdater.on('update-not-available', (e) => {
+  autoUpdater.on('update-not-available', () => {
       console.log("No updates found")
   })
 }

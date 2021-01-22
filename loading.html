@@ -177,8 +177,7 @@
     </div>
 
     <script>
-        var {remote} = require('electron');
-        var app = remote.app;
+        var { ipcRenderer } = require('electron');
         let status = document.getElementById('status');
         var submit = document.getElementById('submit');
         var emailfield = document.getElementById('emailfield');
@@ -189,7 +188,7 @@
             try {
                 status.innerHTML = "CHECKING FOR ACCESSTOKEN"
                 status.style.color = "#fff";
-                if(fs.existsSync(app.getPath("userData") + "/details.json")) {
+                if(fs.existsSync(ipcRenderer.sendSync('get-userdata-path') + "/details.json")) {
                     status.style.color = "#2F8A03";
                     status.innerHTML = "ACCESSTOKEN FOUND - VALIDATING"
                     validate();
@@ -242,7 +241,7 @@
                             clientToken: clientToken
                         }
                         let jsonData = JSON.stringify(details, null, 4);
-                        fs.writeFileSync(app.getPath("userData") + "/details.json", jsonData, function(err) {
+                        fs.writeFileSync(ipcRenderer.sendSync('get-userdata-path') + "/details.json", jsonData, function(err) {
                             if(err) {
                                 console.log(err);
                             }
@@ -272,7 +271,7 @@
 
         function refreshAccessToken() {
             var fs = require('fs');
-            var details = JSON.parse(fs.readFileSync(app.getPath("userData") + "/details.json"))
+            var details = JSON.parse(fs.readFileSync(ipcRenderer.sendSync('get-userdata-path') + "/details.json"))
 
             var xhr = new XMLHttpRequest();
             var url = "http://authserver.mojang.com/refresh";
@@ -290,7 +289,7 @@
                         clientToken: clientToken
                     }
 
-                    let oldDetails = JSON.parse(fs.readFileSync(app.getPath("userData") + "/details.json"))
+                    let oldDetails = JSON.parse(fs.readFileSync(ipcRenderer.sendSync('get-userdata-path') + "/details.json"))
 
                     let newDetails = {
                         accessToken: details.accessToken,
@@ -303,7 +302,7 @@
                     }
 
                     let jsonData = JSON.stringify(newDetails, null, 4);
-                        fs.writeFileSync(app.getPath("userData") + "/details.json", jsonData, function(err) {
+                        fs.writeFileSync(ipcRenderer.sendSync('get-userdata-path') + "/details.json", jsonData, function(err) {
                             if(err) {
                                 console.log(err);
                             }
@@ -328,7 +327,7 @@
 
         function validate() {
             var fs = require('fs');
-            var details = JSON.parse(fs.readFileSync(app.getPath("userData") + "/details.json"))
+            var details = JSON.parse(fs.readFileSync(ipcRenderer.sendSync('get-userdata-path') + "/details.json"))
 
             var xhr = new XMLHttpRequest();
             var url = "http://authserver.mojang.com/validate";
@@ -351,7 +350,6 @@
         }
 
         function successfulAuth() {
-
             var loadingtext = document.getElementById('loadingtext');
             var overlay = document.getElementById('overlay');
             var logo = document.getElementById('logo');
@@ -365,11 +363,9 @@
             const {ipcRenderer} = require('electron');
 
             console.log("Loading Launcher")
-            remote.getGlobal("setTimeout")(function() {
-                const {ipcRenderer} = require('electron');
-                            
-                ipcRenderer.send('resize-me-please');
-                ipcRenderer.send('auth-success')
+            setTimeout(function() {
+              ipcRenderer.send('resize-me-please');
+              ipcRenderer.send('auth-success')
             }, 5000)
         }
 
