@@ -1,3 +1,4 @@
+var reduced_motion_chkbox = document.getElementById("reduced_motion_chkbox");
 var fullscreen_chkbox = document.getElementById("fullscreen_chkbox");
 var minslider = document.getElementById("min_ram_slider");
 var minoutput = document.getElementById("minramusageslider");
@@ -51,7 +52,10 @@ function saveOptions() {
 			fullscreen: fullscreen_chkbox.checked,
 		},
 		launcher_settings: {
-			launcher_visibility_on_launch: launcher_visibility.value
+			launcher_visibility_on_launch: launcher_visibility.value,
+      accessibility: {
+        reduced_motion: reduced_motion_chkbox.checked
+      }
 		}
 	}
 
@@ -93,15 +97,15 @@ window.addEventListener("load", function() {
 			maxslider.value = max;
 
 			fullscreen = data.client_settings.fullscreen;
-			fullscreen_chkbox.checked = fullscreen;
+      fullscreen_chkbox.checked = fullscreen;
+      
+      reduced_motion_chkbox.checked = data.launcher_settings.accessibility.reduced_motion;
+      document.documentElement.className = data.launcher_settings.accessibility.reduced_motion ? "reducedmotion" : "";
 
 			playbtn_status.innerText = "Launch " + data.mc_ver;
 
 			var launcher_visibility_on_launch = data.launcher_settings.launcher_visibility_on_launch;
 			launcher_visibility.value = launcher_visibility_on_launch;
-
-			var details = JSON.parse(fs.readFileSync(userDataPath + "/details.json"));
-
 		} else {
 			console.log('The settings does not exist.');
 			minoutput.innerHTML = "Min RAM Usage: 1024 MB";
@@ -124,7 +128,10 @@ window.addEventListener("load", function() {
 					fullscreen: false,
 				},
 				launcher_settings: {
-					launcher_visibility_on_launch: "Close"
+          launcher_visibility_on_launch: "Close",
+          accessibility: {
+            reduced_motion: false
+          }
 				}
 			}
 		
