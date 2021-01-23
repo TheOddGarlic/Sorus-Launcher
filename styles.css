@@ -18,8 +18,10 @@ a:hover {
     position: absolute;
     bottom: 25px;
     left: 50%;
+    border-radius: 20px;
     transform: translate(-80%);
     display: flex;
+    transition: 0.25s;
 }
 
 .play-btn-container object {
@@ -53,7 +55,7 @@ a:hover {
     text-align: center;
     font-size: 64px;
     outline: none;
-    border: none;
+    border-left: 2px solid #3ca252;
     border-radius: 0px 20px 20px 0px;
     display: flex;
     align-items: center;
@@ -61,6 +63,10 @@ a:hover {
     justify-content: center;
     color: #262626;
     transition: 0.3s;
+}
+
+.playbtn-ver-sel-launch {
+    border-left: 2px solid #a13b3b;
 }
 
 .playbtn-text-cont {
@@ -83,9 +89,12 @@ a:hover {
     font-weight: 700;
 }
 
-.playbtn:hover,
-.playbtn-ver-sel:hover {
-    background-color: #286d38;
+.play-btn-container:hover {
+    box-shadow: 0px 0px 0px 6px rgba(59, 161, 82, 0.47);
+}
+
+.play-btn-container-launch:hover {
+    box-shadow: 0px 0px 0px 6px rgba(161, 59, 59, 0.47);
 }
 
 img {

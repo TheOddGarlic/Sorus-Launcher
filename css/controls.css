@@ -1,12 +1,12 @@
 :root {
     --blue-color: #0075b2;
-    --blue-hover-color: #005d8e;
+    --blue-hover-color: #00689f;
 
     --gray-color: var(--back-bg);
     --gray-hover-color: #404040;
 
     --red-color: #b20303;
-    --red-hover-color: #930000;
+    --red-hover-color: #9d0000;
 }
 
 /* BUTTONS */

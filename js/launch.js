@@ -2,6 +2,7 @@ const http = require('https');
 
 var playbtn_text = document.getElementById("playbtn-text");
 var playbtn_status = document.getElementById("playbtn-status");
+var playbtn_container = document.getElementById('play-btn-container');
 var playbtn = document.getElementById('playbtn');
 var playbtn_ver = document.getElementById('playbtn_ver')
 
@@ -110,9 +111,11 @@ return new Promise((resolve, reject) => {
 async function launchMinecraft() {
     const { Client, Authenticator } = require('minecraft-launcher-core');
     const launcher = new Client();
-
+    
+    playbtn_container.classList.add('play-btn-container-launch');
     playbtn.style.backgroundColor = "#a13b3b";
     playbtn_ver.style.backgroundColor = "#a13b3b";
+    playbtn_ver.classList.add('playbtn-ver-sel-launch');
     playbtn_text.innerHTML = "LAUNCHING"
 
     var max_ram_usage = options.client_settings.max_ram;
@@ -176,8 +179,10 @@ async function launchMinecraft() {
     launcher_visibility_controller();
 
     launcher.on('close', (e) => {
+        playbtn_container.classList.remove('play-btn-container-launch');
         playbtn.style.backgroundColor = "#3BA152";
         playbtn_ver.style.backgroundColor = "#3BA152";
+        playbtn_ver.classList.remove('playbtn-ver-sel-launch');
         playbtn_text.innerHTML = "PLAY"
         playbtn_status.innerHTML = "Launch " + getSelectedVersion();
 
