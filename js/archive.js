@@ -14,7 +14,6 @@ function extractJarFiles(name) {
       await extract(userDataPath + "/mc/Sorus/client/" + name + ".jar", { dir: userDataPath + "/mc/Sorus/client/temp" })
       changePlayButtonStatus("Finished extracting " + name + ".jar")
       console.log(name + ' extraction complete')
-      fs.writeFileSync(userDataPath + "/mc/Sorus/updates.json", "{}");
       resolve();
     } catch (err) {
       console.error(err)

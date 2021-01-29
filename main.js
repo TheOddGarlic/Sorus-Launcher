@@ -1,6 +1,8 @@
 const { autoUpdater } = require('electron-updater');
 const { app, BrowserWindow } = require('electron');
-
+const https = require('https');
+const path = require('path');
+const fs = require('fs');
 
 function createMainWindow() {
   const win = new BrowserWindow({
@@ -9,9 +11,25 @@ function createMainWindow() {
     frame: false,
     webPreferences: {
       nodeIntegration: true,
-      enableRemoteModule: true
+      enableRemoteModule: false,
+      //contextIsolation: true,
+      preload: path.join(app.getAppPath(), 'preload.js')
     }
   })
+
+  function getRemoteFileSizeInBytes(url) {
+    var fileSizeInBytes = 0;
+    https.request(url, { method: 'HEAD' }, res => {
+      fileSizeInBytes = res.headers['content-length'];
+    });
+    return fileSizeInBytes;
+  }
+  
+  function getFileSizeInBytes(filename) {
+    var stats = fs.statSync(filename);
+    var fileSizeInBytes = stats.size;
+    return fileSizeInBytes;
+  }
 
   win.loadFile('loading.html')
   win.resizable = false
@@ -19,6 +37,19 @@ function createMainWindow() {
 
   const {ipcMain} = require('electron');
   const userData = app.getPath('userData');
+
+  ipcMain.on('log', (_, args) => {
+    console.log(args)
+  })
+
+  ipcMain.on('check-update', (event, url, jar) => {
+    // FIXME: Always update??? GitHub Content-Length wrong??? Fix this later.
+    var remoteBytes = getRemoteFileSizeInBytes(url);
+    var localBytes = getFileSizeInBytes(userData + '/mc/Sorus/client/' + jar + '.jar');
+
+    console.log(`${jar} update checked from ${url}`);
+    event.returnValue = remoteBytes == localBytes ? false : true;
+  })
 
   ipcMain.on('get-userdata-path', event => {
     event.returnValue = userData;
