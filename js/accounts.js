@@ -1,5 +1,5 @@
 function signoutofaccount() {
-	fs.unlink(userDataPath + "/details.json", (err) => {
+	fs.unlink(SorusNative.userData + "/details.json", (err) => {
 		if (err) {
 			console.error(err)
 			return
@@ -13,7 +13,7 @@ var ac_name = document.getElementById("ac-name");
 var ac_pfp = document.getElementById("ac-pfp");
 var ac_signout = document.getElementById("ac-signout");
 var ac_useac = document.getElementById("ac-useac");
-var details = JSON.parse(fs.readFileSync(userDataPath + "/details.json"));
+var details = JSON.parse(fs.readFileSync(SorusNative.userData + "/details.json"));
 var ac_loggedinas = document.getElementById("ac-loggedinas");
 
 

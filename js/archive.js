@@ -11,7 +11,7 @@ function extractJarFiles(name) {
   return new Promise(async (resolve, reject) => {
     try {
       changePlayButtonStatus("Extracting " + name + ".jar")
-      await extract(userDataPath + "/mc/Sorus/client/" + name + ".jar", { dir: userDataPath + "/mc/Sorus/client/temp" })
+      await extract(SorusNative.userData + "/mc/Sorus/client/" + name + ".jar", { dir: SorusNative.userData + "/mc/Sorus/client/temp" })
       changePlayButtonStatus("Finished extracting " + name + ".jar")
       console.log(name + ' extraction complete')
       resolve();
@@ -25,7 +25,7 @@ function extractJarFiles(name) {
 // async function archiveDir(name) {
 // 	var archiver = require('archiver');
 
-// 	var output = fs.createWriteStream(userDataPath + "/mc/Sorus/client/" + name + "_compiled.jar");
+// 	var output = fs.createWriteStream(SorusNative.userData + "/mc/Sorus/client/" + name + "_compiled.jar");
 // 	var archive = archiver('zip');
 
 // 	output.on('close', function () {
@@ -39,8 +39,8 @@ function extractJarFiles(name) {
 
 // 	await archive.pipe(output);
 
-// 	await archive.directory(userDataPath + '/mc/Sorus/client/temp', false);
+// 	await archive.directory(SorusNative.userData + '/mc/Sorus/client/temp', false);
 
 // 	await archive.finalize();
-// 	fs.rmdirSync(userDataPath + "/mc/Sorus/client/temp", { recursive: true });
+// 	fs.rmdirSync(SorusNative.userData + "/mc/Sorus/client/temp", { recursive: true });
 // }

@@ -37,7 +37,6 @@
                 const {
                     ipcRenderer
                 } = require('electron');
-                const userDataPath = ipcRenderer.sendSync('get-userdata-path')
 
                 function exitApp() {
                     ipcRenderer.send('close-app');

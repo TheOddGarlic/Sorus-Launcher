@@ -63,7 +63,7 @@ function saveOptions() {
 
 	let fs = require('fs');
 	let jsonData = JSON.stringify(settings, null, 4);
-	fs.writeFileSync(userDataPath + "/settings.json", jsonData, function(err) {
+	fs.writeFileSync(SorusNative.userData + "/settings.json", jsonData, function(err) {
 		if(err) {
 			console.log(err);
 		}
@@ -77,8 +77,8 @@ var total_mem_mb = (os.totalmem() / 1024) / 1024;
 window.addEventListener("load", function() {
 	const fs = require('fs');
 	try {
-		if(fs.existsSync(userDataPath + '/settings.json')) {
-			let data = JSON.parse(fs.readFileSync(userDataPath + '/settings.json'));
+		if(fs.existsSync(SorusNative.userData + '/settings.json')) {
+			let data = JSON.parse(fs.readFileSync(SorusNative.userData + '/settings.json'));
 
 			min = data.client_settings.min_ram;
 			max = data.client_settings.max_ram;
@@ -143,7 +143,7 @@ window.addEventListener("load", function() {
 		
 			let fs = require('fs');
 			let jsonData = JSON.stringify(settings, null, 4);
-			fs.writeFileSync(userDataPath + "/settings.json", jsonData, function(err) {
+			fs.writeFileSync(SorusNative.userData + "/settings.json", jsonData, function(err) {
 				if(err) {
 					console.log(err);
 				}
