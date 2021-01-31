@@ -1,8 +1,68 @@
 const { autoUpdater } = require('electron-updater');
 const { app, BrowserWindow } = require('electron');
 const https = require('https');
-const path = require('path');
+const { join } = require('path');
 const fs = require('fs');
+
+class HTTPError extends Error {
+  constructor (message, res) {
+    super(message);
+    Object.assign(this, res);
+    this.name = this.constructor.name;
+  }
+}
+
+function get(url) {
+  return new Promise((resolve, reject) => {
+    const req = https.request(url, {
+      method: 'GET',
+      headers: {
+        'User-Agent': 'Sorus-Launcher (https://github.com/SorusClient/Sorus-Launcher)'
+      }
+    }, (res) => {
+      const data = [];
+
+      res.on('data', (chunk) => {
+        data.push(chunk);
+      });
+
+      res.once('error', reject);
+
+      res.once('end', () => {
+        const raw = Buffer.concat(data);
+
+        const result = {
+          raw,
+          body: (() => {
+            if ((/application\/json/).test(res.headers['content-type'])) {
+              try {
+                return JSON.parse(raw);
+              } catch (_) {
+                // fall through to raw
+              }
+            }
+
+            return raw;
+          })(),
+          ok: res.statusCode >= 200 && res.statusCode < 400,
+          statusCode: res.statusCode,
+          statusText: res.statusMessage,
+          headers: res.headers
+        };
+
+        if (result.ok) {
+          resolve(result);
+        } else {
+          reject(new HTTPError(`${res.statusCode} ${res.statusMessage}`, result));
+        }
+      });
+    });
+
+    req.once('error', reject);
+
+    req.end();
+  });
+}
 
 function createMainWindow() {
   const win = new BrowserWindow({
@@ -13,20 +73,24 @@ function createMainWindow() {
       nodeIntegration: true,
       enableRemoteModule: false,
       //contextIsolation: true,
-      preload: path.join(app.getAppPath(), 'preload.js')
+      preload: join(app.getAppPath(), 'preload.js')
     }
   })
 
-  function getRemoteFileSizeInBytes(url) {
-    var fileSizeInBytes = 0;
-    https.request(url, { method: 'HEAD' }, res => {
-      fileSizeInBytes = res.headers['content-length'];
-    });
-    return fileSizeInBytes;
+  async function getRemoteFileSizeInBytes(url) {
+    return (await get(url)).body.size;
   }
   
   function getFileSizeInBytes(filename) {
-    var stats = fs.statSync(filename);
+    let stats;
+    try {
+      stats = fs.statSync(filename);
+    } catch {
+      // ignore and set 0 as size, probably file doesn't exist
+      stats = {
+        size: 0
+      }
+    }
     var fileSizeInBytes = stats.size;
     return fileSizeInBytes;
   }
@@ -38,17 +102,23 @@ function createMainWindow() {
   const {ipcMain} = require('electron');
   const userData = app.getPath('userData');
 
-  ipcMain.on('log', (_, args) => {
-    console.log(args)
+  ipcMain.handle('log', async (_, ...args) => {
+    console.log(...args)
+    return args;
   })
 
-  ipcMain.on('check-update', (event, url, jar) => {
-    // FIXME: Always update??? GitHub Content-Length wrong??? Fix this later.
-    var remoteBytes = getRemoteFileSizeInBytes(url);
-    var localBytes = getFileSizeInBytes(userData + '/mc/Sorus/client/' + jar + '.jar');
+  ipcMain.handle('check-update', async (_, url, jar) => {
+    var remoteBytes = await getRemoteFileSizeInBytes(url);
+    console.log(remoteBytes)
+    var localBytes = getFileSizeInBytes(join(userData, 'mc', 'Sorus', 'client', jar + '.jar'));
+    console.log(localBytes)
 
     console.log(`${jar} update checked from ${url}`);
-    event.returnValue = remoteBytes == localBytes ? false : true;
+    return remoteBytes == localBytes ? false : true;
+  })
+
+  ipcMain.on('get-options', event => {
+    event.returnValue = JSON.parse(fs.readFileSync(join(userData, "settings.json")));
   })
 
   ipcMain.on('get-userdata-path', event => {

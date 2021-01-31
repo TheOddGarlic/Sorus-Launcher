@@ -77,34 +77,33 @@ function checkAndDownloadSorus() {
     if (!fs.existsSync(userDataPath + '/mc/Sorus/client/Core.jar') || 
         !fs.existsSync(userDataPath + '/mc/Sorus/client/' + options.mc_ver + '.jar') || 
         !fs.existsSync(userDataPath + '/mc/Sorus/client/JavaAgent.jar') ||
-        SorusNative.checkUpdate("https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/Core.jar", "Core") ||
-        SorusNative.checkUpdate("https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/versions/" + options.mc_ver + ".jar", options.mc_ver) ||
-        SorusNative.checkUpdate("https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/environments/JavaAgent.jar", "JavaAgent")) {
+        SorusNative.shouldUpdate) {
       try {
         playbtn_status.innerHTML = "Downloading Core.jar"
         downloadSorus("https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/Core.jar", "Core").then((dest) => {
           console.log('Successfully downloaded ' + dest);
           counter++;
-          counter > 2 && resolve();
-        }).catch(console.error);
+          counter > 2 && resolve(true);
+        })
 
         playbtn_status.innerHTML = "Downloading Sorus " + options.mc_ver
         downloadSorus("https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/versions/" + options.mc_ver + ".jar", options.mc_ver).then((dest) => {
           console.log('Successfully downloaded ' + dest);
           counter++;
-          counter > 2 && resolve();
-        }).catch(console.error);
+          counter > 2 && resolve(true);
+        })
 
         playbtn_status.innerHTML = "Downloading JavaAgent.jar"
         downloadSorus("https://raw.githubusercontent.com/SorusClient/Sorus-Resources/master/client/environments/JavaAgent.jar", "JavaAgent").then((dest) => {
           console.log('Successfully downloaded ' + dest);
           counter++;
-          counter > 2 && resolve();
-        }).catch(console.error);
+          counter > 2 && resolve(true);
+        })
       } catch (e) {
         reject(e);
       }
     }
+    else resolve(false);
   })
 }
 
@@ -152,11 +151,11 @@ async function launchMinecraft() {
             width: 900,
             height: 500
         },
-        customArgs: `-javaagent:`+ userDataPath +`/mc/Sorus/client/` + options.mc_ver + `_compiled.jar=version=` + options.mc_ver
+        customArgs: `-javaagent:${userDataPath}/mc/Sorus/client/${options.mc_ver}_compiled.jar`
     }
 
     playbtn_status.innerHTML = "Checking for Sorus Installation"
-    await checkAndDownloadSorus().then(extractAll).then(archiveAll).catch(console.error);
+    await checkAndDownloadSorus().then(updated => updated && extractAll().then(archiveAll)).catch(console.error);
     launcher.launch(opts)
     
 
