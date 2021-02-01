@@ -7,6 +7,7 @@ const { existsSync } = require('fs')
 
 window.SorusNative = {
   log: (...args) => {
+    // Log to both devtools console and terminal.
     ipc.invoke('log', ...args)
       .then(args => console.log(...args))
   },
