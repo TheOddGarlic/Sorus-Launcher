@@ -177,7 +177,6 @@
     </div>
 
     <script>
-        var { ipcRenderer } = require('electron');
         let status = document.getElementById('status');
         var submit = document.getElementById('submit');
         var emailfield = document.getElementById('emailfield');
@@ -188,7 +187,7 @@
             try {
                 status.innerHTML = "CHECKING FOR ACCESSTOKEN"
                 status.style.color = "#fff";
-                if(fs.existsSync(ipcRenderer.sendSync('get-userdata-path') + "/details.json")) {
+                if(fs.existsSync(SorusNative.userData + "/details.json")) {
                     status.style.color = "#2F8A03";
                     status.innerHTML = "ACCESSTOKEN FOUND - VALIDATING"
                     validate();
@@ -241,7 +240,7 @@
                             clientToken: clientToken
                         }
                         let jsonData = JSON.stringify(details, null, 4);
-                        fs.writeFileSync(ipcRenderer.sendSync('get-userdata-path') + "/details.json", jsonData, function(err) {
+                        fs.writeFileSync(SorusNative.userData + "/details.json", jsonData, function(err) {
                             if(err) {
                                 console.log(err);
                             }
@@ -271,7 +270,7 @@
 
         function refreshAccessToken() {
             var fs = require('fs');
-            var details = JSON.parse(fs.readFileSync(ipcRenderer.sendSync('get-userdata-path') + "/details.json"))
+            var details = JSON.parse(fs.readFileSync(SorusNative.userData + "/details.json"))
 
             var xhr = new XMLHttpRequest();
             var url = "http://authserver.mojang.com/refresh";
@@ -289,7 +288,7 @@
                         clientToken: clientToken
                     }
 
-                    let oldDetails = JSON.parse(fs.readFileSync(ipcRenderer.sendSync('get-userdata-path') + "/details.json"))
+                    let oldDetails = JSON.parse(fs.readFileSync(SorusNative.userData + "/details.json"))
 
                     let newDetails = {
                         accessToken: details.accessToken,
@@ -302,7 +301,7 @@
                     }
 
                     let jsonData = JSON.stringify(newDetails, null, 4);
-                        fs.writeFileSync(ipcRenderer.sendSync('get-userdata-path') + "/details.json", jsonData, function(err) {
+                        fs.writeFileSync(SorusNative.userData + "/details.json", jsonData, function(err) {
                             if(err) {
                                 console.log(err);
                             }
@@ -327,7 +326,7 @@
 
         function validate() {
             var fs = require('fs');
-            var details = JSON.parse(fs.readFileSync(ipcRenderer.sendSync('get-userdata-path') + "/details.json"))
+            var details = JSON.parse(fs.readFileSync(SorusNative.userData + "/details.json"))
 
             var xhr = new XMLHttpRequest();
             var url = "http://authserver.mojang.com/validate";
@@ -360,12 +359,10 @@
             overlay.style.pointerEvents = "all";
             logo.classList.add('logoAnimation');
 
-            const {ipcRenderer} = require('electron');
-
             console.log("Loading Launcher")
             setTimeout(function() {
-              ipcRenderer.send('resize-me-please');
-              ipcRenderer.send('auth-success')
+              SorusNative.resizeApp()
+              SorusNative.authSuccess()
             }, 5000)
         }
 

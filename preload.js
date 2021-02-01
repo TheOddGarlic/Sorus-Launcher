@@ -12,6 +12,14 @@ window.SorusNative = {
       .then(args => console.log(...args))
   },
 
+  showApp: () => ipc.send('show-app'),
+  hideApp: () => ipc.send('hide-app'),
+  closeApp: () => ipc.send('close-app'),
+  resizeApp: () => ipc.send('resize-app'),
+  minimizeApp: () => ipc.send('minimize-app'),
+  showLogin: () => ipc.send('show-login'),
+  authSuccess: () => ipc.send('auth-success'),
+
   shouldUpdate: false,
   userData: ipc.sendSync('get-userdata-path'),
   options: ipc.sendSync('get-options'),

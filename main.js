@@ -24,7 +24,7 @@ function createMainWindow() {
   // Register ipcMain events.
   require('./ipc/main')
 
-  ipcMain.on('resize-me-please', () => {
+  ipcMain.on('resize-app', () => {
     console.log("resized and centered")
     win.setSize(1200,800)
     win.center();
@@ -57,7 +57,7 @@ function createMainWindow() {
     win.setFullScreenable = false
   })
 
-  ipcMain.on('showLogin', () => {
+  ipcMain.on('show-login', () => {
     win.loadFile('loading.html')
     win.setSize(500, 500);
     win.center();

@@ -14,19 +14,19 @@
     <header class="navbar">
         <ul class="nav-ul">
             <li>
-                <a class="button-circle gray" onclick="exitApp();"><object type="image/svg+xml" data="svg/exit.svg"></object></a>
+                <a class="button-circle gray" onclick="SorusNative.closeApp()"><object type="image/svg+xml" data="svg/exit.svg"></object></a>
             </li>
             <li>
-                <a class="button-circle gray" onclick="miniApp();"><object type="image/svg+xml" data="svg/minimize.svg"></object></a>
+                <a class="button-circle gray" onclick="SorusNative.minimizeApp()"><object type="image/svg+xml" data="svg/minimize.svg"></object></a>
             </li>
             <li>
                 <a class="button-circle gray" onclick="settingsApp()"><object type="image/svg+xml" data="svg/settings.svg"></object></a>
             </li>
             <li>
-                <a class="button-circle gray" onclick="accountApp();"><object type="image/svg+xml" data="svg/user.svg"></object></a>
+                <a class="button-circle gray" onclick="accountApp()"><object type="image/svg+xml" data="svg/user.svg"></object></a>
             </li>
             <li>
-                <a class="button-circle gray" onclick="homeApp();"><object type="image/svg+xml" data="svg/home.svg"></object></a>
+                <a class="button-circle gray" onclick="homeApp()"><object type="image/svg+xml" data="svg/home.svg"></object></a>
             </li>
             <div class="navbar-left">
                 <img src="media/sorus_dark.png" alt="">
@@ -34,17 +34,6 @@
             </div>
 
             <script>
-                const {
-                    ipcRenderer
-                } = require('electron');
-
-                function exitApp() {
-                    ipcRenderer.send('close-app');
-                }
-
-                function miniApp() {
-                    ipcRenderer.send('minimize-app')
-                }
 
                 function userApp() {
                     if (document.getElementById('user_pop_up').style.display == "block") {

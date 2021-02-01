@@ -4,8 +4,9 @@ function signoutofaccount() {
 			console.error(err)
 			return
 		}
-	})
-	ipcRenderer.send("showLogin")
+  })
+  
+	SorusNative.showLogin()
 }
 
 const fs = require("fs")

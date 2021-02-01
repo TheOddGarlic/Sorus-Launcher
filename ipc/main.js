@@ -10,7 +10,7 @@ ipc.handle('check-update', async (_, url, jar) => {
   var remoteBytes = await getRemoteFileSizeInBytes(url)
   var localBytes = getFileSizeInBytes(join(userData, 'mc', 'Sorus', 'client', jar + '.jar'))
 
-  console.log(`${jar} update checked from ${url}`)
+  console.log(`${jar} update checked from ${url}, local bytes: ${localBytes}, remote bytes: ${remoteBytes}`)
   return remoteBytes == localBytes ? false : true
 })
 

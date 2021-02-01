@@ -84,28 +84,28 @@
     </div>
 
     <script>
-        let status = document.getElementById('statusline1');
-        let status2 = document.getElementById('statusline2');
+        // let status = document.getElementById('statusline1');
+        // let status2 = document.getElementById('statusline2');
 
-        window.onload = function() {
-            var {version} = require('./package.json').version;
-            const { autoUpdater } = require('electron-updater');
+        // window.onload = function() {
+        //     var {version} = require('./package.json').version;
+        //     const { autoUpdater } = require('electron-updater');
 
-            autoUpdater.on('download-progress', (e) => {
-                console.log("Started download")
-                status.innerHTML = "DOWNLOADED " + e.percent + " AT " + e.bytesPerSecond;
-                status2.innerHTML = e.transferred + "MB/" + e.total + "MB"
-            })
+        //     autoUpdater.on('download-progress', (e) => {
+        //         console.log("Started download")
+        //         status.innerHTML = "DOWNLOADED " + e.percent + " AT " + e.bytesPerSecond;
+        //         status2.innerHTML = e.transferred + "MB/" + e.total + "MB"
+        //     })
 
-            autoUpdater.on('update-downloaded', (e) => {
-                console.log("Finished Download")
-                status2.innerHTML = "RESTARTING APPLICATION";
-                status.innerHTML = "UPDATE DOWNLOADED"
-                setTimeout(function() {
-                    ipcRenderer.send("quitAndInstall");
-                })
-            })
-        }
+        //     autoUpdater.on('update-downloaded', (e) => {
+        //         console.log("Finished Download")
+        //         status2.innerHTML = "RESTARTING APPLICATION";
+        //         status.innerHTML = "UPDATE DOWNLOADED"
+        //         setTimeout(function() {
+        //             ipcRenderer.send("quitAndInstall");
+        //         })
+        //     })
+        // }
 
 
     </script>

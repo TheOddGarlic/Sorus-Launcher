@@ -178,21 +178,18 @@ async function launchMinecraft() {
         playbtn_status.innerHTML = "Launch " + getSelectedVersion();
 
         if(SorusNative.options.launcher_settings.launcher_visibility_on_launch == "Close") {
-            ipcRenderer.send('close-app');
+          SorusNative.closeApp()
         } else {
-            ipcRenderer.send("show-app");
+          SorusNative.showApp()
         }
     });
 
 }
 
 function launcher_visibility_controller() {
-    let data = JSON.parse(fs.readFileSync(SorusNative.userData + '/settings.json'));
-
-    if(data.launcher_settings.launcher_visibility_on_launch == "Close") {
-        ipcRenderer.send("hide-app");
-        
-    } else if(data.launcher_settings.launcher_visibility_on_launch == "Hide") {
-        ipcRenderer.send("hide-app");
-    }
+  if (SorusNative.options.launcher_settings.launcher_visibility_on_launch == "Close") {
+    SorusNative.closeApp()
+  } else if (SorusNative.options.launcher_settings.launcher_visibility_on_launch == "Hide") {
+    SorusNative.hideApp()
+  }
 }
