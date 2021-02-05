@@ -22,6 +22,10 @@ ipc.on('get-userdata-path', event => {
   event.returnValue = userData;
 })
 
+ipc.on('does-details-exist', event => {
+  event.returnValue = fs.existsSync(join(userData, "details.json"));
+})
+
 ipc.handle('log', async (_, ...args) => {
   console.log(...args)
   return args
