@@ -31,6 +31,10 @@ ipc.handle('log', async (_, ...args) => {
   return args
 })
 
+ipc.handle('save-details', async (_, details) => {
+  fs.writeFileSync(join(userData, "details.json"), JSON.stringify(details, null, 4));
+})
+
 async function getRemoteFileSizeInBytes(url) {
   return (await get(url)).body.size
 }

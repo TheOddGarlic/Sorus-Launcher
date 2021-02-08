@@ -150,7 +150,7 @@
         }
 
         * {
-            -webkit-user-select: none;
+          user-select: none;
         }
 
     </style>
@@ -229,7 +229,6 @@
 
                         console.log(json);
                         
-                        const fs = require('fs');
                         let details = {
                             username: username,
                             uuid: uuid,
@@ -238,12 +237,9 @@
                             accessToken: accessToken,
                             clientToken: clientToken
                         }
-                        let jsonData = JSON.stringify(details, null, 4);
-                        fs.writeFileSync(SorusNative.userData + "/details.json", jsonData, function(err) {
-                            if(err) {
-                                console.log(err);
-                            }
-                        });
+
+                        SorusNative.saveDetails(details);
+
                         status.innerHTML = "SUCCESS"
                         status.style.color = "#2F8A03";
                         successfulAuth();

@@ -20,6 +20,7 @@ window.SorusNative = {
   minimizeApp: () => ipc.send('minimize-app'),
   showLogin: () => ipc.send('show-login'),
   authSuccess: () => ipc.send('auth-success'),
+  saveDetails: details => ipc.invoke('save-details', details),
 
   shouldUpdate: false,
   userData: ipc.sendSync('get-userdata-path'),
